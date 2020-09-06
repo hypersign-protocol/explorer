@@ -1,0 +1,5 @@
+logs
+*.out
+*.log
+node_modules
+.env
