@@ -26,11 +26,11 @@ margin-right: 12%
     <div class="row">
       <div class="col-md-9 centeralign logo">
         <!-- <h3><img class="logo" src="https://forum.aeternity.com/uploads/db0917/original/1X/543f494a818af66690a1298689af3fdd0c6389a1.png"> | Laboratory</h3> -->
-        <h2 class="leftAlign">HyperSign Identity Explorer</h2>
+        <h2 class="leftAlign">{{$config.app.name}}</h2>
         <h6
           class="leftAlign"
           style="color:grey; font-style: italic;"
-        >DID Explorer for Hypersign Identity network!</h6>
+        >{{$config.app.description}}</h6>
         <hr style="opacity: 1.5" />
       </div>
       <div class="col-md-9 marginRight marginLeft rightAlign" v-if="$router.history.current.name != 'PKIIdLogin'">
