@@ -115,8 +115,8 @@
 import { getChallange } from "lds-sdk";
 import QrcodeVue from "qrcode.vue";
 import { sign } from "lds-sdk";
-import { encryptData } from '../crypto-lib/symmetric'
-const {sha256hashStr} = require("../crypto-lib/symmetric");
+// import { encryptData } from '../crypto-lib/symmetric'
+const { sha256hashStr } = require("../utils/hash");
 export default {
   name: "Login",
   components: {
@@ -239,8 +239,8 @@ export default {
           
           console.log(this.$route.query)
           console.log(j.message)
-          const encryptedUserData = encryptData(this.$route.query.appId, JSON.stringify(j.message.user))
-          const redirect_uri = this.$route.query.redirect_uri + '?userData=' + encryptedUserData
+          // const encryptedUserData = encryptData(this.$route.query.appId, JSON.stringify(j.message.user))
+          const redirect_uri = this.$route.query.redirect_uri + '?userData=' + userData
           window.location.href = redirect_uri; 
 
           // localStorage.setItem("authToken", j.message.jwtToken);

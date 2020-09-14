@@ -77,7 +77,7 @@
 
 <script>
 import fetch from "node-fetch";
-const {sha256hashStr} = require("../crypto-lib/symmetric");
+const { sha256hashStr } = require("../utils/hash");
 export default {
   name: "Register",
   components: {

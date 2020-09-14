@@ -129,7 +129,7 @@ margin-right: 12%
 import { getChallange } from "lds-sdk";
 import QrcodeVue from "qrcode.vue";
 import { sign } from "lds-sdk";
-const { sha256hashStr } = require("../crypto-lib/symmetric");
+const { sha256hashStr } = require("../utils/hash");
 export default {
   name: "Login",
   components: {

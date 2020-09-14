@@ -123,7 +123,7 @@
 <script>
 import fetch from "node-fetch";
 import { getUserDoc, getCredential } from "lds-sdk";
-const {sha256hashStr} = require("../crypto-lib/symmetric");
+const { sha256hashStr } = require("../utils/hash");
 export default {
   name: "Register",
   components: {},
