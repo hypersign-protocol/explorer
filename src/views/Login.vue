@@ -85,7 +85,7 @@ margin-right: 12%
                 </thead>
                 <tbody>
                   <tr v-for="row in didList" :key="row">
-                    <td><a :href="'http://localhost:5000/api/did/resolve/'+row.did" target="_blank">{{row.did}}</a></td>
+                    <td><a :href="`${$config.nodeServer.BASE_URL}${$config.nodeServer.DID_RESOLVE_EP}`+row.did" target="_blank">{{row.did}}</a></td>
                     <td>{{row.name}}</td>
                     <td
                       style="word-wrap: break-word;min-width: 700px;max-width: 700px;"
@@ -108,7 +108,7 @@ margin-right: 12%
 
                 <tbody>
                   <tr v-for="row in schemaList" :key="row">
-                    <th scope="row"><a :href="'http://localhost:5000/api/schema/get/'+row.id" target="_blank">{{row.id}}</a></th>
+                    <th scope="row"><a :href="`${$config.nodeServer.BASE_URL}${$config.nodeServer.SCHEMA_GET_EP}`+row.id" target="_blank">{{row.id}}</a></th>
                     <td>{{row.credentialName}}</td>
                     <td>{{row.attributes}}</td>
                     <td>{{row.version}}</td>
@@ -164,9 +164,9 @@ export default {
     async getList(type) {
       let url = "";
       if (type === "DID") {
-        url = `http://${this.host}:5000/api/did/list`;
+        url = `${this.$config.nodeServer.BASE_URL}${this.$config.nodeServer.DID_LIST_EP}`;
       } else {
-        url = `http://${this.host}:5000/api/schema/list`;
+        url = `${this.$config.nodeServer.BASE_URL}${this.$config.nodeServer.SCHEMA_LIST_EP}`;
       }
 
       const resp = await fetch(url);

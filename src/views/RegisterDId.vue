@@ -139,7 +139,7 @@ export default {
     signup() {
       try {
         if(this.fullName == " ") return alert('Alias is required!');
-        const url = `http://${this.host}:5000/api/did/create?name=${this.fullName}`;
+        const url = `${this.$config.nodeServer.BASE_URL}${this.$config.nodeServer.DID_CREATE_EP}?name=${this.fullName}`;
         fetch(url)
           .then((res) => res.json())
           .then((j) => {
