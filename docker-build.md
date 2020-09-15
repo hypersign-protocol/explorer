@@ -1,5 +1,13 @@
 ## Dockerization
 
+
+### Building the image (Development Env)
+
+```bash
+docker build -f Dockerfile-dev -t hypersignprotocol/explorer .
+```
+* This will build the container for dev env.
+
 ### Building the image (Production Env)
 
 
