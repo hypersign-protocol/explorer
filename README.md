@@ -1,7 +1,12 @@
-### Setup
+## Explorer
 
-```js
-cd client
+### Manul Setup
+
+If do not want to setup manul, then skip to the docker [section](#or-simply-use-docker-container). 
+
+```bash
+git clone https://github.com/hypersign-protocol/explorer #Pull the repo
+cd explorer
 npm i
 ```
 
@@ -12,8 +17,6 @@ npm i
 ```bash
 npm run dev
 ```
-
-On success full run, the app will run on [`http://localhost:5001/`](). You can set this port in   `vue.config.js` file.
 
 #### Prod env
 
@@ -30,36 +33,33 @@ Make sure you change the env var as per your requirement.
 npm run build
 ```
 
-## Dockerization
+## Or Simply Use Docker Container
 
-### Building the image (Development Env)
-
-```bash
-docker build -f Dockerfile-dev -t hypersignprotocol/explorer:dev .
-```
-* This will build the container for dev env.
-
-### Building the image (Production Env)
-
-
-* At first run `mv .env.staging .env`. 
-* Now configure appTitle, appDescription etc.
-* Run the docker build to build the image
+### Pull the image
 
 ```bash
-docker build -f Dockerfile-prod -t hypersignprotocol/explorer:prod .
+docker pull hypersignprotocol/explorer
 ```
 
-* This will build the container for prod env on the Nginx server.
+### Run container
 
-### Running the container (Development Env)
+Cone the repo and change directory
 
 ```bash
-docker run --env VUE_APP_TITLE="Explorer (development)" -p 5001:5001 --rm hypersignprotocol/explorer:dev
+git clone https://github.com/hypersign-protocol/explorer #Pull the repo
+cd explorer
 ```
 
-### Running the container (Production Env)
+Now run the container. 
 
 ```bash
-docker run  -p 8080:80 --rm hypersignprotocol/explorer:prod
+docker run -it -v ${PWD}:/app -v /app/node_modules -p 5001:5001 hypersignprotocol/explorer
 ```
+We are mounting the current directory for source code and running the container. 
+
+-- 
+
+* On success full run, the app will run on [`http://localhost:5001/`]().
+* [Ref](https://shekhargulati.com/2019/01/18/dockerizing-a-vue-js-application/)
+
+
