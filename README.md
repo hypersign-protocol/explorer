@@ -74,7 +74,7 @@ docker pull hypersignprotocol/explorer:env
 ### Run
 
 ```bash
-docker run -it --env VUE_APP_TLE="Test Application"  -p 5001:5001 hypersignprotocol/explorer:env
+docker run -it --env VUE_APP_TITLE="Test Application"  -p 5001:5001 hypersignprotocol/explorer:env
 ```
 
 -- 
