@@ -54,7 +54,7 @@
                 </vue-recaptcha>   -->
               </div>
               <div class="form-group">
-                <button :disabled="status==='submitting'" type="submit"  class="btn btn-primary btn-sm">Sign up</button>
+                <button :disabled="status==='submitting'" type="submit"  class="btn btn-primary btn-sm">Register</button>
               </div>
             </form>
           </div>
@@ -148,7 +148,7 @@ export default {
             this.status = "";
             this.downloadCredentials()
             alert('Did has been successfully registered. Please keep your keys.json file safe. It contains your privatekey')
-            this.$router.push("login");
+            this.$router.push("/");
           });
       } catch (e) {
         alert(e);
