@@ -24,78 +24,82 @@
 }
 </style>
 <template>
-
   <div class="home">
-
-    <div class="row">
-      <div class="col-md-8" style="margin-left: 17%;">
+    
+    <div class="col-md-3" style="font-size: small;color:grey;margin-left: 36%;">
+      <form action="#" style="padding:6px">
         <b-card no-body style="padding: 40px">
+          <h4>DID Registration</h4>
+          <hr/>
           <div class="row">
-            <form action="#" class="col-md-12 form-inline">
-              <div class="form-group">                
-                <input type="text" size="30" placeholder="Enter an alias" class="form-control" v-model="fullName" required />
+            <form action="#" class="col-md-12" @submit.prevent="submit">
+              <div class="form-group">
+                <label class="floatLeft">Name:</label>
+                <input type="text" class="form-control" v-model="fullName" placeholder="Enter name" required/>
               </div>
-              <div class="form-group" style="padding-left: 10px">
-                <button
-                type="button"
-                data-toggle="modal"
-                @click="signup()"
-                class="btn btn-primary"
-              >Register</button>
+              <div class="form-group">
+                <!-- <VueRecaptcha sitekey="sitekey" loadRecaptchaScript="true" @verify="onCaptchaVerified"/> -->
+                <vue-recaptcha 
+                  ref="recaptcha" 
+                  size="invisible" 
+                  sitekey="6LeKIM4ZAAAAAC23tPRa8Ut0MFF2FFN61wl0ihVZ" 
+                  :loadRecaptchaScript="true" 
+                  @verify="onCaptchaVerified"
+                  @expired="onCaptchaExpired"
+                ></vue-recaptcha>
+                <!-- <vue-recaptcha
+                    ref="recaptcha"
+                    @verify="onCaptchaVerified"
+                    sitekey="6Lf4Hs4ZAAAAABWR5rRqj-QYSdJi7rAP5HsyrZkD">
+                </vue-recaptcha>   -->
+              </div>
+              <div class="form-group">
+                <button :disabled="status==='submitting'" type="submit"  class="btn btn-primary btn-sm">Sign up</button>
               </div>
             </form>
           </div>
+          <!-- <div class="row">
+            <div class="col-sm-3">
+              <button
+                type="button"
+                data-toggle="modal"
+                @click="signup()"
+                class="btn btn-primary btn-sm"
+              >Register</button>
+            </div>
+          </div> -->
         </b-card>
-      </div>
+      </form>
     </div>
-    <div class="row" style="margin-top:1%">
-     <div class="col-md-8" style="margin-left: 17%;">
-       <b-card no-body style="padding: 40px; ">
-       <div class="row">
-       <form action="#" class="col-md-6">
-              <div class="form-group">
-                <label class="floatLeft">keys.json:</label>
-                <textarea class="form-control" v-model="credentials" rows="6" cols="50"></textarea>
-              </div>
-          </form>            
-          <form action="#" class="col-md-6">
-              <div class="form-group">
-                <label class="floatLeft">didDoc.json:</label>
-                <textarea class="form-control" v-model="userData" rows="6" cols="50"></textarea>
-              </div>
-          </form>       
-          </div>
-          </b-card>
-    </div>
-  </div>
   </div>
 </template>
 
 <script>
 import fetch from "node-fetch";
 import { getUserDoc, getCredential } from "lds-sdk";
-
+import VueRecaptcha from 'vue-recaptcha';
 const { sha256hashStr } = require("../utils/hash");
 export default {
   name: "RegisterDid",
   components: {
-    
+    VueRecaptcha
   },
   data() {
     return {
       active: 0,
-      fullName: "Amit Kumar",
-      email: "amit@gmail.com",
+      fullName: "",
+      email: "",
       telephone: "8323210123",
-      publicKey: "ak_h7Hw9UD9JUPUtyZ54Es2BhFFiBo22aD2k615LtHshxpZ68dqJ",
-      username: "Amit",
-      password: "Amit",
-      birthdate: "16/11/1992",
-      jobTitle: "Engineer",
+      publicKey: "",
+      username: "t",
+      password: "",
+      birthdate: "",
+      jobTitle: "",
       host: location.hostname,
       credentials: "",
       userData: "",
-      prevRoute: null
+      prevRoute: null,
+      status: ""
     };
   },
   created() {},
@@ -105,22 +109,19 @@ export default {
     })
   },
   methods: {
-    gotosubpage: (id) => {
-      this.$router.push(`${id}`);
+    submit: function () {
+      // this.status = "submitting";
+      this.$refs.recaptcha.execute();
     },
-    async generateCredsDocs(){
-      const userData = {
-        name: this.fullName,
-        email: this.email,
-        telephone: this.phoneNumber,
-        birthdate: this.birthdate,
-        jobTitle: this.jobTitle,
-      };
-      const userDoc = await getUserDoc(userData);
-      this.userData = JSON.stringify(userDoc);
-
-      const creds = await getCredential(this.fullName);
-      this.credentials = JSON.stringify(creds);
+    onCaptchaExpired: function () {
+      console.log('Captcha expired')
+      this.$refs.recaptcha.reset();
+    },
+    onCaptchaVerified: function (recaptchaToken) {
+      const self = this;
+      self.status = "submitting";
+      self.$refs.recaptcha.reset();
+      this.signup(recaptchaToken)
     },
     forceFileDownload(data, fileName) {
       const url = window.URL.createObjectURL(new Blob([data]));
@@ -133,24 +134,21 @@ export default {
     downloadCredentials() {
       this.forceFileDownload(this.credentials, "keys.json");
     },
-    downloadUserDoc() {
-      this.forceFileDownload(this.userData, "didDoc.json");
-    },
-    signup() {
+    signup(recaptchaToken) {
       try {
+        console.log(recaptchaToken)
         if(this.fullName == " ") return alert('Alias is required!');
-        const url = `${this.$config.nodeServer.BASE_URL}${this.$config.nodeServer.DID_CREATE_EP}?name=${this.fullName}`;
+        const url = `${this.$config.nodeServer.BASE_URL}${this.$config.nodeServer.DID_CREATE_EP}?name=${this.fullName}&rcToken=${recaptchaToken}`;
         fetch(url)
           .then((res) => res.json())
           .then((j) => {
             if (j && j.status == 500) {
               return alert(`Error:  ${j.error}`);
             }
-            this.credentials = JSON.stringify(j.message.keys);
-            this.userData = JSON.stringify(j.message.didDoc);
+            this.status = "";
             this.downloadCredentials()
-            this.downloadUserDoc()
-            alert('Did Successfully created. You can check on explorer. Please keep your keys safe')
+            alert('Did has been successfully registered. Please keep your keys.json file safe. It contains your privatekey')
+            this.$router.push("login");
           });
       } catch (e) {
         alert(e);
