@@ -132,7 +132,7 @@ export default {
       link.click();
     },
     downloadCredentials() {
-      this.forceFileDownload(this.credentials, "keys.json");
+      this.forceFileDownload(JSON.stringify(this.credentials), "keys.json");
     },
     signup(recaptchaToken) {
       try {
@@ -145,7 +145,10 @@ export default {
             if (j && j.status == 500) {
               return alert(`Error:  ${j.error}`);
             }
+
+            console.log(j.message)
             this.status = "";
+            this.credentials = j.message.keys
             this.downloadCredentials()
             alert('Did has been successfully registered. Please keep your keys.json file safe. It contains your privatekey')
             this.$router.push("/");
