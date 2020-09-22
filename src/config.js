@@ -18,5 +18,7 @@ module.exports = {
         name: process.env.VUE_APP_TITLE || "Hypersign Studio",
         version: process.env.VUE_APP_VERSION || "v1.0",
         description: process.env.VUE_APP_DESC || "A portal to issue and verify credentials on Hypersign Identity network!"
-    }   
+    },
+    recaptchaSiteKey: process.env.VUE_APP_RECAPTCHA_SITE_KEY
+
 }

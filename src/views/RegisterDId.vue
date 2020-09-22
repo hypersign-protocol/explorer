@@ -42,7 +42,7 @@
                 <vue-recaptcha 
                   ref="recaptcha" 
                   size="invisible" 
-                  sitekey="6LeKIM4ZAAAAAC23tPRa8Ut0MFF2FFN61wl0ihVZ" 
+                  :sitekey="$config.recaptchaSiteKey" 
                   :loadRecaptchaScript="true" 
                   @verify="onCaptchaVerified"
                   @expired="onCaptchaExpired"
