@@ -1,19 +1,7 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-
-// import PKIIdLogin from './views/PKIIdLogin.vue'
-
-
-
-// import Register from './views/Register.vue'
-// import Register_PKI from './views/Register_pki.vue'
-// import Home from './views/Home.vue'
-// import fetch from 'node-fetch'
-// import Dashboard from './views/Dashboard.vue';
-
-
-import Home from './views/Home.vue'
-import RegisterDid from './views/RegisterDId.vue'
+import Vue from 'vue';
+import Router from 'vue-router';
+import Home from './views/Home.vue';
+import RegisterDid from './views/RegisterDId.vue';
 
 Vue.use(Router)
 
@@ -24,16 +12,6 @@ const router =  new Router({
       path: '/',
       redirect: '/explorer'
     },
-    // {
-    //   path: '/explorer/dashboard',
-    //   name: 'Dashboard',
-    //   component: Dashboard
-    // },
-    // {
-    //   path: '/login',
-    //   name: 'PKIIdLogin',
-    //   component: PKIIdLogin
-    // },
     {
       path: '/explorer/newdid',
       name: 'newdid',
@@ -44,24 +22,6 @@ const router =  new Router({
       name: 'Home',
       component: Home
     }
-    // {
-    //   path: '/dashboard/register',
-    //   name: 'register',
-    //   component: Register
-    // },
-    // {
-    //   path: '/register_pki',
-    //   name: 'register_pki',
-    //   component: Register_PKI
-    // },
-    // {
-    //   path: '/dashboard/home',
-    //   name: 'home',
-    //   component: Home,
-    //   meta: {
-    //     requiresAuth: true
-    //   } 
-    // }
   ]
 })
 

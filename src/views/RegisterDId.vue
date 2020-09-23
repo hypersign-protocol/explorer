@@ -76,7 +76,6 @@
 
 <script>
 import fetch from "node-fetch";
-import { getUserDoc, getCredential } from "lds-sdk";
 import VueRecaptcha from 'vue-recaptcha';
 const { sha256hashStr } = require("../utils/hash");
 export default {
