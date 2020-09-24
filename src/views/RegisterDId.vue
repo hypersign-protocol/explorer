@@ -38,36 +38,20 @@
                 <input type="text" class="form-control" v-model="fullName" placeholder="Enter name" required/>
               </div>
               <div class="form-group">
-                <!-- <VueRecaptcha sitekey="sitekey" loadRecaptchaScript="true" @verify="onCaptchaVerified"/> -->
-                <vue-recaptcha 
+                <!-- <vue-recaptcha 
                   ref="recaptcha" 
                   size="invisible" 
                   :sitekey="$config.recaptchaSiteKey" 
                   :loadRecaptchaScript="true" 
                   @verify="onCaptchaVerified"
                   @expired="onCaptchaExpired"
-                ></vue-recaptcha>
-                <!-- <vue-recaptcha
-                    ref="recaptcha"
-                    @verify="onCaptchaVerified"
-                    sitekey="6Lf4Hs4ZAAAAABWR5rRqj-QYSdJi7rAP5HsyrZkD">
-                </vue-recaptcha>   -->
+                ></vue-recaptcha> -->
               </div>
               <div class="form-group">
-                <button :disabled="status==='submitting'" type="submit"  class="btn btn-primary btn-sm">Register</button>
+                <button :disabled="status==='submitting'" @click="signup('')" type="submit"  class="btn btn-primary btn-sm">Register</button>
               </div>
             </form>
           </div>
-          <!-- <div class="row">
-            <div class="col-sm-3">
-              <button
-                type="button"
-                data-toggle="modal"
-                @click="signup()"
-                class="btn btn-primary btn-sm"
-              >Register</button>
-            </div>
-          </div> -->
         </b-card>
       </form>
     </div>

@@ -1,5 +1,5 @@
 ## ui-builder
-FROM node:12 as ui-builder
+FROM node:12.6.0-buster as ui-builder
 WORKDIR /app
 
 ENV PATH /app/node_modules/.bin:$PATH
