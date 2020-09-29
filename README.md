@@ -21,11 +21,15 @@ npm run build
 npm run serve
 ```
 
+Make sure you have `.env` file.
+
 #### Dev
 
 ```bash
-npm run serve
+npm run dev
 ```
+
+Make sure you have `.env.staging` file.
 
 ## Using docker container
 

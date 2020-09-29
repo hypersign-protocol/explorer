@@ -38,17 +38,17 @@
                 <input type="text" class="form-control" v-model="fullName" placeholder="Enter name" required/>
               </div>
               <div class="form-group">
-                <!-- <vue-recaptcha 
+                <vue-recaptcha 
                   ref="recaptcha" 
                   size="invisible" 
                   :sitekey="$config.recaptchaSiteKey" 
                   :loadRecaptchaScript="true" 
                   @verify="onCaptchaVerified"
                   @expired="onCaptchaExpired"
-                ></vue-recaptcha> -->
+                ></vue-recaptcha>
               </div>
               <div class="form-group">
-                <button :disabled="status==='submitting'" @click="signup('')" type="submit"  class="btn btn-primary btn-sm">Register</button>
+                <button :disabled="status==='submitting'" type="submit"  class="btn btn-primary btn-sm">Register</button>
               </div>
             </form>
           </div>
