@@ -36,13 +36,13 @@ Make sure you have `.env.staging` file.
 ### Build
 
 ```bash
-docker build -t hypersignprotocol/explorer:test .
+docker build -t hypersignprotocol/explorer:v1.0 .
 ```
 
 ### Pull
 
 ```bash
-docker pull hypersignprotocol/explorer:test
+docker pull hypersignprotocol/explorer:v1.0
 ```
 
 ### Run
@@ -66,7 +66,7 @@ docker run -it \
 --env VUE_APP_STUDIO_BASE_URL=http://localhost:9001/ \
 --env VUE_APP_NODE_SERVER_BASE_URL=http://localhost:5000/ \
 --env VUE_APP_RECAPTCHA_SITE_KEY="re captcha site key" \
--p 5001:80 hypersignprotocol/explorer:test
+-p 5001:80 hypersignprotocol/explorer:v1.0
 ```
 
 Note: If you do not pass `--env` options then all envs are taken from `.env` file.
