@@ -10,15 +10,15 @@ const router =  new Router({
   routes: [
     {
       path: '/',
-      redirect: '/explorer'
+      redirect: '/home'
     },
     {
-      path: '/explorer/newdid',
+      path: '/newdid',
       name: 'newdid',
       component: RegisterDid
     },
     {
-      path: '/explorer',
+      path: '/home',
       name: 'Home',
       component: Home
     }
