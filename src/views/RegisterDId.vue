@@ -134,7 +134,7 @@ export default {
             this.credentials = j.message.keys
             this.downloadCredentials()
             alert('Did has been successfully registered. Please keep your keys.json file safe. It contains your privatekey')
-            this.$router.push("/");
+            this.$router.push("/home");
           });
       } catch (e) {
         alert(e);

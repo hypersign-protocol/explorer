@@ -9,16 +9,16 @@ const router =  new Router({
   mode: 'history',
   routes: [
     {
-      path: '/',
-      redirect: '/home'
+      path: '/explorer',
+      redirect: '/explorer/home'
     },
     {
-      path: '/newdid',
+      path: '/explorer/newdid',
       name: 'newdid',
       component: RegisterDid
     },
     {
-      path: '/home',
+      path: '/explorer/home',
       name: 'Home',
       component: Home
     }

@@ -1,6 +1,6 @@
 module.exports = {
   baseUrl: process.env.NODE_ENV === 'production'
-    ? '/explorer'
+    ? '/static-explorer'
     : '/',
   devServer: {
       port: 5001

@@ -145,7 +145,7 @@ export default {
     goToNextPage(route){
       const r = this.menu.find(x => x.name === route)
       if(r.name === "Studio") {
-        window.location.href = "http://localhost:9001/"
+        window.location.href = this.$config.studio.BASE_URL + "login"
       }
       this.$router.push(r.path)
       if(this.$route.params.nextUrl != null){
