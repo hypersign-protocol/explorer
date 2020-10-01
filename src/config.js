@@ -1,24 +1,22 @@
-const env  = require('dotenv')
-env.config();
+import EnvProvider from 'jvjr-docker-env'
 
-module.exports = {
+export default {
     studio: {
-        BASE_URL: process.env.VUE_APP_STUDIO_BASE_URL || "http://localhost:9001/",
+        BASE_URL: EnvProvider.value('STUDIO_BASE_URL'),
     },
     nodeServer: {
-        BASE_URL: process.env.VUE_APP_NODE_SERVER_BASE_URL || "http://localhost:5000/",
-        NETWORK_STATUS_EP: process.env.VUE_APP_NODE_SERVER_NETWORK_STATUS_EP || "network/info",
-        SCHEMA_LIST_EP: process.env.VUE_APP_NODE_SERVER_SCHEMA_LIST_EP || "api/schema/list",
-        SCHEMA_GET_EP: process.env.VUE_APP_NODE_SERVER_SCHEMA_GET_EP || "api/schema/get",
-        DID_LIST_EP: process.env.VUE_APP_NODE_SERVER_DID_LIST_EP || "api/did/list",
-        DID_CREATE_EP: process.env.VUE_APP_NODE_SERVER_DID_CREATE_EP || "api/did/create",
-        DID_RESOLVE_EP: process.env.VUE_APP_NODE_SERVER_DID_RERSOLVE_EP || "api/did/resolve/"
+        BASE_URL: EnvProvider.value('NODE_SERVER_BASE_URL'),
+        NETWORK_STATUS_EP: EnvProvider.value('NODE_SERVER_NETWORK_STATUS_EP') || "network/info",
+        SCHEMA_LIST_EP: EnvProvider.value('NODE_SERVER_SCHEMA_LIST_EP') || "api/schema/list",
+        SCHEMA_GET_EP: EnvProvider.value('NODE_SERVER_SCHEMA_GET_EP') || "api/schema/get/",
+        DID_LIST_EP: EnvProvider.value('NODE_SERVER_DID_LIST_EP') || "api/did/list",
+        DID_CREATE_EP: EnvProvider.value('NODE_SERVER_DID_CREATE_EP') || "api/did/create",
+        DID_RESOLVE_EP: EnvProvider.value('NODE_SERVER_DID_RERSOLVE_EP') || "api/did/resolve/"
     },
     app: {
-        name: process.env.VUE_APP_TITLE || "Hypersign Studio",
-        version: process.env.VUE_APP_VERSION || "v1.0",
-        description: process.env.VUE_APP_DESC || "A portal to issue and verify credentials on Hypersign Identity network!"
+        name: EnvProvider.value('TITLE'),
+        version: EnvProvider.value('VERSION'),
+        description: EnvProvider.value('DESC')
     },
-    recaptchaSiteKey: process.env.VUE_APP_RECAPTCHA_SITE_KEY
-
+    recaptchaSiteKey: EnvProvider.value('RECAPTCHA_SITE_KEY')
 }

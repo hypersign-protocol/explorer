@@ -6,12 +6,13 @@
     "serve": "vue-cli-service serve --mode production",
     "dev": "vue-cli-service serve --mode staging",
     "setEnv": "cp .env.staging .env",
-    "build": "vue-cli-service build",
+    "build": "jvjr --build && vue-cli-service build",
     "build-stage": "vue-cli-service build --mode staging",
     "lint": "vue-cli-service lint",
     "test:unit": "vue-cli-service test:unit",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -d dist",
+    "jvjr-build": "jvjr --build"
   },
   "dependencies": {
     "aes-js": "^3.1.2",
@@ -19,6 +20,7 @@
     "bootstrap-vue": "^2.0.0-rc.11",
     "bs58check": "^2.1.2",
     "gh-pages": "^1.2.0",
+    "jvjr-docker-env": "^1.0.1",
     "mdbvue": "^6.7.1",
     "node-fetch": "^2.6.0",
     "qrcode.vue": "^1.7.0",

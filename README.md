@@ -1,6 +1,8 @@
-## Explorer
+# Explorer
 
-### Manul Setup
+## Manual
+
+### Install
 
 If do not want to setup manul, then skip to the docker [section](#or-simply-use-docker-container). 
 
@@ -10,72 +12,64 @@ cd explorer
 npm i
 ```
 
-### Run
+### Build & Run
 
-#### Dev env
+#### Prod
+
+```bash
+npm run build
+npm run serve
+```
+
+Make sure you have `.env` file.
+
+#### Dev
 
 ```bash
 npm run dev
 ```
 
-#### Prod env
+Make sure you have `.env.staging` file.
 
-```bash
-npm run setEnv
-npm run serve
-```
-
-Make sure you change the env var as per your requirement.
+## Using docker container
 
 ### Build
 
 ```bash
-npm run build
-```
-
-## Or Simply Use Docker Container
-
-### Pull the image
-
-```bash
-docker pull hypersignprotocol/explorer
-```
-
-### Run container
-
-Cone the repo and change directory
-
-```bash
-git clone https://github.com/hypersign-protocol/explorer #Pull the repo
-cd explorer
-```
-
-Now run the container. 
-
-```bash
-docker run -it -v ${PWD}:/app -v /app/node_modules -p 5001:5001 hypersignprotocol/explorer
-```
-We are mounting the current directory for source code and running the container. 
-
-## With Env Variable at run time
-
-### Build
-
-```bash
-docker build -f Dockerfile-env -t hypersignprotocol/explorer:env .
+docker build -t hypersignprotocol/explorer:v1.0 .
 ```
 
 ### Pull
 
 ```bash
-docker pull hypersignprotocol/explorer:env
+docker pull hypersignprotocol/explorer:v1.0
 ```
 
 ### Run
 
 ```bash
-docker run -it --env VUE_APP_TITLE="Test Application"  -p 5001:5001 hypersignprotocol/explorer:env
+docker run -it -p 5001:80 hypersignprotocol/explorer:test
 ```
+
+### Enviroments Vars
+
+* `VUE_APP_TITLE`: Title of application
+* `VUE_APP_VERSION`: Version of application
+* `VUE_APP_STUDIO_BASE_URL`: Base url of studio app
+* `VUE_APP_NODE_SERVER_BASE_URL`: Base url of HS blockchain node
+* `VUE_APP_RECAPTCHA_SITE_KEY`: Recaptcha site key
+
+```bash
+docker run -it \
+--env VUE_APP_TITLE="Identity Explorer" \
+--env VUE_APP_VERSION=v1.0 \
+--env VUE_APP_STUDIO_BASE_URL=http://localhost:9001/ \
+--env VUE_APP_NODE_SERVER_BASE_URL=http://localhost:5000/ \
+--env VUE_APP_RECAPTCHA_SITE_KEY="re captcha site key" \
+-p 5001:80 hypersignprotocol/explorer:v1.0
+```
+
+Note: If you do not pass `--env` options then all envs are taken from `.env` file.
 
 -- 
 

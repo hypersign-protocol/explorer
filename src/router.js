@@ -9,8 +9,8 @@ const router =  new Router({
   mode: 'history',
   routes: [
     {
-      path: '/',
-      redirect: '/explorer'
+      path: '/explorer',
+      redirect: '/explorer/home'
     },
     {
       path: '/explorer/newdid',
@@ -18,7 +18,7 @@ const router =  new Router({
       component: RegisterDid
     },
     {
-      path: '/explorer',
+      path: '/explorer/home',
       name: 'Home',
       component: Home
     }

@@ -2,5 +2,5 @@ logs
 *.out
 *.log
 node_modules
-.env
+jvjr-env.json
 dist/
