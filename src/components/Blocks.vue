@@ -26,7 +26,7 @@
 import Vue from 'vue'
 
 export default Vue.extend({
-    name: "Transactions",
+    name: "Blocks",
     data() {
         return {        
             latestBlockHeight: "",    
