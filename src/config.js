@@ -18,5 +18,10 @@ export default {
         version: EnvProvider.value('VERSION'),
         description: EnvProvider.value('DESC')
     },
+    hid: {
+        HID_NODE_RPC_EP: EnvProvider.value('HID_NODE_RPC_EP') || "http://localhost:2667/",
+        HID_NODE_SOCKET_EP: EnvProvider.value('HID_NODE_SOCKET_EP') || "ws://localhost:2667/websocket",
+        SCHEMA_LIST_EP: EnvProvider.value('HID_NODE_REST_EP') || "api/schema/list",
+    },
     recaptchaSiteKey: EnvProvider.value('RECAPTCHA_SITE_KEY')
 }
