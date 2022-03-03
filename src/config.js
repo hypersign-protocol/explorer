@@ -27,7 +27,7 @@ export default {
     
 
     gblBlocks: 'gblBlocks',
-    gblBlockHeight: 'gblBlockHeight',
+    gblBlockHeight: 0,
     gblTransactions: 'gblTransactions'
 
 

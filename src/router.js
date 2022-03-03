@@ -1,8 +1,11 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Home from './views/Home.vue';
-import RegisterDid from './views/RegisterDId.vue';
 import Dashboard  from './views/Dashboard';
+import BlockList from './views/BlockList';
+import TransactionList from './views/TransactionList';
+import Test from './views/Test';
+import TxDetails from './views/TransactionDetails'
+
 
 Vue.use(Router)
 
@@ -14,23 +17,29 @@ const router =  new Router({
       redirect: 'dashboard'
     },
     {
-      path: '/explorer',
-      redirect: '/explorer/home'
-    },
-    {
-      path: '/explorer/newdid',
-      name: 'newdid',
-      component: RegisterDid
-    },
-    {
-      path: '/explorer/home',
-      name: 'Home',
-      component: Home,
-    },
-    {
       path: '/dashboard',
       name: "Dashboard",
       component: Dashboard
+    },
+    {
+      path: '/blocks',
+      name: "BlockList",
+      component: BlockList
+    },
+    {
+      path: '/transactions',
+      name: "TransactionList",
+      component: TransactionList
+    },
+    {
+      path: '/blockdetails',
+      name: "BlockDet",
+      component: Test
+    },
+    {
+      path: '/txdetails',
+      name: "TxDetails",
+      component: TxDetails
     },
   ]
 })

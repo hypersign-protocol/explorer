@@ -1,6 +1,6 @@
 <template>
     <div>
-        <table class="table">
+        <table class="table  table-striped table-bordered table-sm">
             <tr>
                 <th>Height</th>
                 <th>Hash</th>
@@ -10,9 +10,9 @@
             </tr>
             <tr v-for="b in  blockList" v-bind="b.block_id.hash">
             <!-- <tr :v-for="b in blocksList" :v-bind="b"> -->
-                <td>{{b.block.header.height}}</td>
+                <td><a :href='`/blockdetails?height=${b.block.header.height}`'>{{b.block.header.height}}</a></td>
                 <!-- TODO -->
-                <td><a :href='b.block_id.hash'>{{shorten(b.block_id.hash)}}</a></td>
+                <td><a :href='`/blockdetails?hash=0x${b.block_id.hash}`'>0x{{shorten(b.block_id.hash)}}</a></td>
                 <td>{{b.block.data.txs.length}}</td>
                 <td>{{formatDate(b.block.header.time)}}</td>
                 <td>{{shorten(b.block.header.proposer_address)}}</td>    

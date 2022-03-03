@@ -29,8 +29,15 @@
     box-shadow: 0px 0px 2px 2px #ebeef1b3;
 }
 
+.float-right{
+    float:right;
+    align-content:right;
+    font-size: small;
+    color: grey;
+}
+
 .card-subheading{
-    font-size:small;
+    font-size:x-small;
     color:grey;
 }
 
@@ -70,8 +77,11 @@
         <div class="row block-tx-margin">
             <div class="col-md-6" >
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-6">
                         <label class="table-heading"> <font-awesome-icon icon="fa-solid fa-cubes" /> Latest Blocks</label>
+                    </div>
+                    <div class="col-md-6">
+                        <a class="float-right" :href='`/blocks?nextBlockHeight=${latestBlockHeight}`'>See More</a>
                     </div>
                 </div>
                 <div class="row">
@@ -82,8 +92,11 @@
             </div>
             <div class="col-md-6">
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-6">
                         <label class="table-heading"> <font-awesome-icon icon="fa-solid fa-file-invoice-dollar" /> Latest Transactions</label>
+                    </div>
+                    <div class="col-md-6">
+                        <a class="float-right" :href='`/transactions?nextBlockHeight=${latestBlockHeight}`'>See More</a>
                     </div>
                 </div>
                 <div class="row">
@@ -98,11 +111,11 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+
 import Blocks from '../components/Blocks.vue'
 import Transactions from '../components/Transactions.vue'
 
-export default Vue.extend({
+export default {
     components:{
         Blocks,
         Transactions
@@ -137,6 +150,7 @@ export default Vue.extend({
             const parseData = JSON.parse(data);
             const { result } = parseData;
             that.latestBlockHeight = result.data.value.block.header.height
+            // that.$config.gblBlockHeight = that.latestBlockHeight;
             // console.log('emitting newBlockHeightFoundEvent event')
             // that.$emit("newBlockHeightFoundEvent", that.latestBlockHeight);
         };
@@ -174,5 +188,5 @@ export default Vue.extend({
         },
     }
 
-})
+}
 </script>

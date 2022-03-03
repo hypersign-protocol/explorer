@@ -21,8 +21,8 @@ library.add(faCube, faCubes, faFileInvoiceDollar)
 /* add font awesome icon component */
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
-Vue.prototype.$gblBlocks = [];
-Vue.prototype.$gblTransactions = [];
+// Vue.prototype.$gblBlocks = [];
+// Vue.prototype.$gblTransactions = [];
 Vue.prototype.$gblBlockHeight = 0;
 
 Vue.config.productionTip = false

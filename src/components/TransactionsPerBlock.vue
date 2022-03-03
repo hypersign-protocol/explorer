@@ -8,9 +8,9 @@
                 <th>Time</th>
             </tr>
             <tr v-for="t in transactionList" v-bind="t.height">
-                <td><a :href='`/blockdetails?height=${t.height}`'>{{t.height}}</a></td>
+                <td>{{t.height}}</td>
                 <!-- TODO -->
-                <td><a :href='`/txdetails?hash=0x${t.hash}`'>0x{{shorten(t.hash)}}</a></td>
+                <td><a :href='t.hash'>{{shorten(t.hash)}}</a></td>
                 <td>{{checkTxStatus(t.tx_result.code)}}</td>
                 <td>{{getTimestampFromBlock(t.height)}}</td>
             </tr>
@@ -27,15 +27,15 @@ export default Vue.extend({
     data() {
         return {
             transactionList: [],
-            timestamp: ""
+            timestamp: "",
+            blockHeight: ""
+
         }
     },
-    props: ['latestBlockHeight'],
-    watch: {
-        latestBlockHeight() { 
-            this.getTop10Transactions();
-        }
-    }, 
+
+    created(){
+        
+    },
     methods: {
         async getTop10Transactions(){
             console.log('Inside Tx Component - ' +  this.latestBlockHeight)
