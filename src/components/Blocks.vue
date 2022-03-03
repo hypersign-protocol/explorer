@@ -8,7 +8,7 @@
                 <th>Time</th>
                 <th>Proposer</th>
             </tr>
-            <tr v-for="b in blocksList" v-bind="b.block_id.hash">
+            <tr v-for="b in  blockList" v-bind="b.block_id.hash">
             <!-- <tr :v-for="b in blocksList" :v-bind="b"> -->
                 <td>{{b.block.header.height}}</td>
                 <!-- TODO -->
@@ -24,28 +24,30 @@
 
 <script lang="ts">
 import Vue from 'vue'
+// import config from '../config'
 
 export default Vue.extend({
     name: "Blocks",
     data() {
         return {        
-            latestBlockHeight: "",    
-            blocksList: []
+           blockList: [],
+           latestBlockHeight: 0
         }
     },
     props:{
-        // latestBlockHeight : {
+        // $config.gblBlockHeight : {
         //     type: String
         // }
     },
     async created(){     
+        
        setInterval(async () => {
             try{
-                console.log(this.latestBlockHeight)
                 await this.getConsensusState();
                 await this.getTop10Blocks();
             }   catch(e){
-                console.error(JSON.stringify(e))
+
+                console.error(e)
             }
        }, 2000)
     },   
@@ -55,7 +57,7 @@ export default Vue.extend({
             const consensusStateAPI = `http://localhost:26657/consensus_state`
             const res =  await fetch(consensusStateAPI)
             const json = await res.json();
-            console.log(json)
+            // console.log(json)
             const { result, error } = json;
             if(error){
                 console.log(error)
@@ -63,10 +65,11 @@ export default Vue.extend({
             }
             const { round_state } = result;
             this.latestBlockHeight = round_state['height/round/step'].split('/')[0];
+            console.log(this.latestBlockHeight )
             
         },
         async getTop10Blocks(){
-            if(!this.latestBlockHeight){
+            if(!this.latestBlockHeight && this.latestBlockHeight !== 'undefined'){
                 return
             }
             const block_searchAPI = `http://localhost:26657/block_search?query="block.height<${this.latestBlockHeight}"&page=1&per_page=10&order_by="desc"`;
@@ -78,7 +81,9 @@ export default Vue.extend({
                 throw new Error(error)
             }
             const { blocks } = result;
-            this.blocksList = blocks;
+            console.log('================='+ this.$config.gblBlockHeight + '============================')
+            console.log(blocks[0].block_id.hash)
+            this.blockList = blocks;
         },
 
         formatDate(date){

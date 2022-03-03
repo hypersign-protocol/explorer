@@ -10,6 +10,10 @@ const router =  new Router({
   mode: 'history',
   routes: [
     {
+      path: '/',
+      redirect: 'dashboard'
+    },
+    {
       path: '/explorer',
       redirect: '/explorer/home'
     },

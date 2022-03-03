@@ -39,7 +39,7 @@ export default Vue.extend({
     async created(){
         setInterval(async () => {
             try{
-                console.log(this.latestBlockHeight)
+                // console.log(this.latestBlockHeight)
                 await this.getConsensusState();
                 await this.getTop10Transactions();
             }   catch(e){
@@ -53,7 +53,7 @@ export default Vue.extend({
             const consensusStateAPI = `http://localhost:26657/consensus_state`
             const res =  await fetch(consensusStateAPI)
             const json = await res.json();
-            console.log(json)
+            // console.log(json)
             const { result, error } = json;
             if(error){
                 console.log(error)

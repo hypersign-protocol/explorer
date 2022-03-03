@@ -23,5 +23,12 @@ export default {
         HID_NODE_SOCKET_EP: EnvProvider.value('HID_NODE_SOCKET_EP') || "ws://localhost:2667/websocket",
         SCHEMA_LIST_EP: EnvProvider.value('HID_NODE_REST_EP') || "api/schema/list",
     },
-    recaptchaSiteKey: EnvProvider.value('RECAPTCHA_SITE_KEY')
+    recaptchaSiteKey: EnvProvider.value('RECAPTCHA_SITE_KEY'),
+    
+
+    gblBlocks: 'gblBlocks',
+    gblBlockHeight: 'gblBlockHeight',
+    gblTransactions: 'gblTransactions'
+
+
 }

@@ -36,6 +36,7 @@
     /* height: 40px; */
     margin-top: 9px;
     margin-left: 5px;
+    float:left;
 }
 
 #app {
@@ -51,6 +52,8 @@
   color: gray;
   font-size: larger;
   margin-top: auto;
+  padding-top:10px;
+  float:right;
 }
 
 
@@ -61,8 +64,10 @@
       <div class="col-md-4">        
         <!-- <h5 class="leftAlign">{{$config.app.name}}</h5>  -->
         <div class="form-group form-inline">
-          <img class="logo-style" src="https://hypermine.in/hypersign/wp-content/uploads/2020/01/Banner_logo2.png"> 
-          <h4 class="subtitle"> <span style="opacity:0.4">|</span> {{$config.app.name}} ({{$config.app.version}})</h4>  
+          <a  href="https://hypersign.id"  target="_blank">
+            <img class='logo-style' src="https://hypermine.in/hypersign/wp-content/uploads/2020/01/Banner_logo2.png"> 
+            <h4 class="subtitle" > <span style="font-size:small;"> {{$config.app.name}} ({{$config.app.version}}) </span></h4>
+          </a>
         </div>
       </div>
         <div class="col-md-8 rightAlign" style="padding-top:12px">
@@ -70,21 +75,7 @@
             <button type="button" @click="goToNextPage(m.name)" class="btn btn-light btn-sm" v-for="m in menu" :key="m.name">{{m.name}}</button>    
           <!-- </div> -->
         </div>
-        
-        <!-- <h6
-          class="leftAlign"
-          style="color:grey; font-style: italic;"
-        >{{$config.app.decription}}</h6> -->
-        <!-- <h6 class="leftAlign" style="color:grey; font-style: italic;">Version: {{$config.app.version}}</h6> -->
-        <!-- <hr style="opacity: 1.5" /> -->
-      
     </div>
-    <!-- <div class="row">
-      <div class="col-md-9 rightAlign marginLeft" v-if="!(authRoutes.includes($router.history.current.name))">
-        <button @click="goToNextPage(m.name)" class="btn btn-link btn-sm" v-for="m in menu" :key="m.name">{{m.name}}</button>
-        <hr style="opacity: 1.5" />
-      </div>
-    </div> -->
     <router-view />
     <notifications group="foo" />
   </div>
