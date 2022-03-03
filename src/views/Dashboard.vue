@@ -19,8 +19,8 @@
             </div>
             <div class="col-md-2 box card">
                 <!-- Toatal Number of Block -->
-                <span class="too-big-font">673</span>
-                <span class="card-header">Transactions</span>
+                <span class="too-big-font">{{ transactionCount }}</span>
+                <span class="card-header">Successful Txs</span>
             </div>
             <div class="col-md-2 box card">
                 <!--  -->
@@ -58,10 +58,11 @@ export default Vue.extend({
     data() {
         return {
             latestBlockHeight: "",
-            connection: null
+            connection: null,
+            transactionCount: 0
         }
     },
-    created(){
+    async created(){
         this.connection = new WebSocket('ws://localhost:26657/websocket');
       
         const that =  this;
@@ -87,6 +88,23 @@ export default Vue.extend({
         this.connection.onerror = function(error) {
             console.log("Websocket connection error ", error);
         };
+    },
+    async updated(){
+        await this.getTransactionCount();
+    },
+    methods: {
+
+        async getTransactionCount(){
+            const event_name = "/cosmos.bank.v1beta1.MsgSend"
+            const transactionCountAPI = `http://localhost:26657/tx_search?query="message.action=\'${event_name}\'"`;
+            const res =  await fetch(transactionCountAPI)
+            const json = await res.json();
+            const { result, error } = json;
+            if(error){
+                throw new Error(error)
+            }
+            this.transactionCount = result.total_count;
+        }
     }
 
 })
