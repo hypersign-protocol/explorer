@@ -31,44 +31,17 @@ export default Vue.extend({
     data() {
         return {        
            blockList: [],
-           latestBlockHeight: 0
         }
     },
-    props:{
-        // $config.gblBlockHeight : {
-        //     type: String
-        // }
-    },
-    async created(){     
-        
-       setInterval(async () => {
-            try{
-                await this.getConsensusState();
-                await this.getTop10Blocks();
-            }   catch(e){
-
-                console.error(e)
-            }
-       }, 2000)
+    props: ['latestBlockHeight'],
+    watch: {
+        latestBlockHeight() { 
+            this.getTop10Blocks();
+        }
     },   
-       
     methods: {
-        async getConsensusState(){
-            const consensusStateAPI = `http://localhost:26657/consensus_state`
-            const res =  await fetch(consensusStateAPI)
-            const json = await res.json();
-            // console.log(json)
-            const { result, error } = json;
-            if(error){
-                console.log(error)
-                throw new Error(error)
-            }
-            const { round_state } = result;
-            this.latestBlockHeight = round_state['height/round/step'].split('/')[0];
-            console.log(this.latestBlockHeight )
-            
-        },
         async getTop10Blocks(){
+            console.log('Inside Blocks Component - ' +  this.latestBlockHeight)
             if(!this.latestBlockHeight && this.latestBlockHeight !== 'undefined'){
                 return
             }
@@ -81,8 +54,6 @@ export default Vue.extend({
                 throw new Error(error)
             }
             const { blocks } = result;
-            console.log('================='+ this.$config.gblBlockHeight + '============================')
-            console.log(blocks[0].block_id.hash)
             this.blockList = blocks;
         },
 

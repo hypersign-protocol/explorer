@@ -26,47 +26,22 @@ export default Vue.extend({
     name: "Transactions",
     data() {
         return {
-            latestBlockHeight: "",    
             transactionList: [],
             timestamp: ""
         }
     },
-    props:{
-        // latestBlockHeight : {
-        //     type: String
-        // }
-    },
-    async created(){
-        setInterval(async () => {
-            try{
-                // console.log(this.latestBlockHeight)
-                await this.getConsensusState();
-                await this.getTop10Transactions();
-            }   catch(e){
-                console.error(JSON.stringify(e))
-            }
-       }, 2000) 
-    },
-    
+    props: ['latestBlockHeight'],
+    watch: {
+        latestBlockHeight() { 
+            this.getTop10Transactions();
+        }
+    }, 
     methods: {
-        async getConsensusState(){
-            const consensusStateAPI = `http://localhost:26657/consensus_state`
-            const res =  await fetch(consensusStateAPI)
-            const json = await res.json();
-            // console.log(json)
-            const { result, error } = json;
-            if(error){
-                console.log(error)
-                throw new Error(error)
-            }
-            const { round_state } = result;
-            this.latestBlockHeight = round_state['height/round/step'].split('/')[0];
-            
-        },
         async getTop10Transactions(){
-            // if(!this.latestBlockHeight){
-            //     return
-            // }
+            console.log('Inside Tx Component - ' +  this.latestBlockHeight)
+            if(!this.latestBlockHeight && this.latestBlockHeight !== 'undefined'){
+                return
+            }
             const transaction_searchAPI = `http://localhost:26657/tx_search?query="tx.height<${this.latestBlockHeight}"&prove=true&page=1&per_page=10&order_by="desc"`;
             const res =  await fetch(transaction_searchAPI)
             const json = await res.json();

@@ -76,7 +76,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <Blocks class="table-design"></Blocks>
+                        <Blocks v-bind:latestBlockHeight='latestBlockHeight' class="table-design"></Blocks>
                     </div>
                 </div>
             </div>
@@ -88,7 +88,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <Transactions></Transactions>
+                        <Transactions v-bind:latestBlockHeight='latestBlockHeight'></Transactions>
                     </div>
                 </div>
             </div>
@@ -137,6 +137,8 @@ export default Vue.extend({
             const parseData = JSON.parse(data);
             const { result } = parseData;
             that.latestBlockHeight = result.data.value.block.header.height
+            // console.log('emitting newBlockHeightFoundEvent event')
+            // that.$emit("newBlockHeightFoundEvent", that.latestBlockHeight);
         };
         this.connection.onerror = function(error) {
             console.log("Websocket connection error ", error);
