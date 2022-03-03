@@ -24,7 +24,7 @@
             </div>
             <div class="col-md-2 box card">
                 <!--  -->
-                <span class="too-big-font">673</span>
+                <span class="too-big-font">{{ totalValidators }}</span>
                 <span class="card-header">Validators</span>
             </div>
             <div class="col-md-2 box card">
@@ -91,6 +91,7 @@ export default Vue.extend({
     },
     async updated(){
         await this.getTransactionCount();
+        await this.getValidatorsCount();
     },
     methods: {
 
@@ -104,7 +105,18 @@ export default Vue.extend({
                 throw new Error(error)
             }
             this.transactionCount = result.total_count;
-        }
+        },
+
+        async getValidatorsCount() {
+            const validatorsCountAPI = `http://localhost:26657/validators`;
+            const res =  await fetch(validatorsCountAPI)
+            const json = await res.json();
+            const { result, error } = json;
+            if(error){
+                throw new Error(error)
+            }
+            this.totalValidators = result.total;
+        },
     }
 
 })
