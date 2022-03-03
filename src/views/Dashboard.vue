@@ -20,6 +20,7 @@
     float:left; font-weight:bold
 }
 .table-design{ 
+    min-height: 400px;
     margin-top: 1%; 
     max-height: 400px; 
     overflow-x: hidden; 
@@ -101,7 +102,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <Transactions v-bind:latestBlockHeight='latestBlockHeight'></Transactions>
+                        <Transactions v-bind:latestBlockHeight='latestBlockHeight'  class="table-design"></Transactions>
                     </div>
                 </div>
             </div>
@@ -129,7 +130,8 @@ export default {
         }
     },
     async created(){
-        this.connection = new WebSocket('ws://localhost:26657/websocket');
+        
+        this.connection = new WebSocket(`${this.$config.hid.HID_NODE_SOCKET_EP}`);
       
         const that =  this;
         this.connection.onopen = function() {
@@ -166,7 +168,7 @@ export default {
 
         async getTransactionCount(){
             const event_name = "/cosmos.bank.v1beta1.MsgSend"
-            const transactionCountAPI = `http://localhost:26657/tx_search?query="message.action=\'${event_name}\'"`;
+            const transactionCountAPI = `${this.$config.hid.HID_NODE_RPC_EP}/tx_search?query="message.action=\'${event_name}\'"`;
             const res =  await fetch(transactionCountAPI)
             const json = await res.json();
             const { result, error } = json;
@@ -177,7 +179,7 @@ export default {
         },
 
         async getValidatorsCount() {
-            const validatorsCountAPI = `http://localhost:26657/validators`;
+            const validatorsCountAPI = `${this.$config.hid.HID_NODE_RPC_EP}/validators`;
             const res =  await fetch(validatorsCountAPI)
             const json = await res.json();
             const { result, error } = json;

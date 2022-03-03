@@ -80,7 +80,7 @@ export default {
     },
     methods: {
          async getTransactionDetailsbyHash(){
-            const api  = `http://localhost:26657/tx?hash=${this.txHash}&prove=true`;
+            const api  = `${this.$config.hid.HID_NODE_RPC_EP}/tx?hash=${this.txHash}&prove=true`;
             const res =  await fetch(api)
             const json = await res.json();
             

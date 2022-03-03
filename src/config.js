@@ -19,9 +19,8 @@ export default {
         description: EnvProvider.value('DESC')
     },
     hid: {
-        HID_NODE_RPC_EP: EnvProvider.value('HID_NODE_RPC_EP') || "http://localhost:2667/",
-        HID_NODE_SOCKET_EP: EnvProvider.value('HID_NODE_SOCKET_EP') || "ws://localhost:2667/websocket",
-        SCHEMA_LIST_EP: EnvProvider.value('HID_NODE_REST_EP') || "api/schema/list",
+        HID_NODE_RPC_EP: EnvProvider.value('HID_NODE_RPC_EP') || "http://47bc-2405-201-a002-2344-e19c-325-a5b8-ab2a.ngrok.io",
+        HID_NODE_SOCKET_EP: EnvProvider.value('HID_NODE_SOCKET_EP') || "ws://47bc-2405-201-a002-2344-e19c-325-a5b8-ab2a.ngrok.io/websocket",
     },
     recaptchaSiteKey: EnvProvider.value('RECAPTCHA_SITE_KEY'),
     

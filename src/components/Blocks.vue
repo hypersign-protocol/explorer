@@ -45,7 +45,7 @@ export default Vue.extend({
             if(!this.latestBlockHeight && this.latestBlockHeight !== 'undefined'){
                 return
             }
-            const block_searchAPI = `http://localhost:26657/block_search?query="block.height<${this.latestBlockHeight}"&page=1&per_page=10&order_by="desc"`;
+            const block_searchAPI = `${this.$config.hid.HID_NODE_RPC_EP}/block_search?query="block.height<${this.latestBlockHeight}"&page=1&per_page=10&order_by="desc"`;
             const res =  await fetch(block_searchAPI)
             const json = await res.json();
             

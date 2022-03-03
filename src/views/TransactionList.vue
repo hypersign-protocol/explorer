@@ -66,7 +66,7 @@ export default {
             if(!this.latestBlockHeight && this.latestBlockHeight !== 'undefined'){
                 return
             }
-            const transaction_searchAPI = `http://localhost:26657/tx_search?query="tx.height<${this.latestBlockHeight}"&prove=true&page=1&per_page=50&order_by="desc"`;
+            const transaction_searchAPI = `${this.$config.hid.HID_NODE_RPC_EP}/tx_search?query="tx.height<${this.latestBlockHeight}"&prove=true&page=1&per_page=50&order_by="desc"`;
             const res =  await fetch(transaction_searchAPI)
             const json = await res.json();
             
@@ -86,7 +86,7 @@ export default {
         },
 
         async getTimestampFromBlock(height) {
-            const block_detailAPI = `http://localhost:26657/block?height=${height}`;
+            const block_detailAPI = `${this.$config.hid.HID_NODE_RPC_EP}/block?height=${height}`;
             const res = await fetch(block_detailAPI)
             const json = await res.json();
             

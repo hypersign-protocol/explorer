@@ -13,7 +13,7 @@
         </div>
         
         <div class="row" v-if="this.blockHeader != null" style="text-align: left;">
-            <h5>Block Header</h5>
+            <h5> <font-awesome-icon icon="fa-solid fa-cubes" /> Block Header</h5>
             <div class="col-md-12">
                 <ul class="list-group">
                     <li class="list-group-item">
@@ -38,7 +38,7 @@
             </div>
         </div>
         <div class="row" style="margin-top:2%">
-            <h5>Transactions</h5>
+            <h5><font-awesome-icon icon="fa-solid fa-file-invoice-dollar" /> Transactions ({{this.blockTransactions.length}})</h5>
             <div class="col-md-12">
                 
                 <!-- Block Transactions -->
@@ -78,9 +78,9 @@ export default {
               let api  = ""
               console.log()
             if(this.blockHeight != "" && this.blockHeight != 'NaN'){
-                api  = `http://localhost:26657/block?height=${parseInt(this.blockHeight)}`;
+                api  = `${this.$config.hid.HID_NODE_RPC_EP}/block?height=${parseInt(this.blockHeight)}`;
             } else {
-                api  = `http://localhost:26657/block_by_hash?hash=${this.blockHash}`;
+                api  = `${this.$config.hid.HID_NODE_RPC_EP}/block_by_hash?hash=${this.blockHash}`;
             }
             
             const res =  await fetch(api)
