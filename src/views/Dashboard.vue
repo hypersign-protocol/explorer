@@ -123,7 +123,7 @@ export default {
     },
     data() {
         return {
-            latestBlockHeight: "",
+            latestBlockHeight: 0,
             connection: null,
             transactionCount: 0,
             totalValidators: 0

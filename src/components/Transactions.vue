@@ -11,7 +11,14 @@
                 <td><a :href='`/blockdetails?height=${t.height}`'>{{t.height}}</a></td>
                 <!-- TODO -->
                 <td><a :href='`/txdetails?hash=0x${t.hash}`'>0x{{shorten(t.hash)}}</a></td>
-                <td>{{checkTxStatus(t.tx_result.code)}}</td>
+                
+                
+                <td v-if="t.tx_result.code == 0">
+                    <span class="badge badge-success">SUCCESS</span>
+                </td>
+                <td v-else>
+                    <span class="badge badge-danger">FAIL</span>
+                </td>
                 <td>{{getTimestampFromBlock(t.height)}}</td>
             </tr>
         </table>
@@ -36,9 +43,9 @@ export default Vue.extend({
             this.getTop10Transactions();
         }
     }, 
+    
     methods: {
         async getTop10Transactions(){
-            console.log('Inside Tx Component - ' +  this.latestBlockHeight)
             if(!this.latestBlockHeight && this.latestBlockHeight !== 'undefined'){
                 return
             }
@@ -70,6 +77,7 @@ export default Vue.extend({
             if(error){
                 throw new Error(error)
             }
+            console.log(result)
             const { block } = result;
             const timestamp = block.header.time;
 
