@@ -117,16 +117,17 @@ export default {
       menu: [
         { 
           name: "Dashboard",  
-          path: "/explorer/",
+          path: "/",
           isShow: true,
         },
         { 
-          name: "Get DID",  
-          path: "/explorer/newdid",
+          name: "Blocks",  
+          path: "/blocks",
           isShow: true,
         },
         { 
-          name: "Studio",  
+          name: "Transactions",  
+          path: "/transactions",
           isShow: true,
         }
       ]

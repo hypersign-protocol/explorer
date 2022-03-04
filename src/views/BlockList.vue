@@ -36,8 +36,8 @@
 
         <div class="row">
             <div class="col-md-12">
-                <a :href='`/blocks?nextBlockHeight=${parseInt(latestBlockHeight) + 50}`'> Next </a> |
-                <a :href='`/blocks?nextBlockHeight=${parseInt(latestBlockHeight) - 50}`'> Previous </a>
+                <a :href='`/blocks?nextBlockHeight=${parseInt(latestBlockHeight) - 50}`'> Previous </a> |
+                <a :href='`/blocks?nextBlockHeight=${parseInt(latestBlockHeight) + 50}`'> Next </a> 
             </div>
         </div>
     </div>
@@ -58,7 +58,7 @@ export default {
     async created(){
         const { nextBlockHeight} = this.$route.query
         const h =  localStorage.getItem("latestBlockHeight")
-        this.latestBlockHeight = h? h: nextBlockHeight
+        this.latestBlockHeight = nextBlockHeight ? nextBlockHeight: h;
         await this.getTop10Blocks();
     },
 
@@ -78,6 +78,8 @@ export default {
             }
             const { blocks } = result;
             this.blockList = blocks;
+            console.log(blocks[0].block.header.height)
+            this.latestBlockHeight = blocks[0].block.header.height
         },
 
         formatDate(date){
