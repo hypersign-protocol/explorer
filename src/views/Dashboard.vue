@@ -1,6 +1,6 @@
 <style scoped>
 .box{
- margin-left: 3.0%;
+ /* margin-left: 3.0%; */
  padding-bottom: 20px;
  box-shadow: 0px 0px 2px 2px #ebeef1b3;
 }
@@ -49,30 +49,30 @@
 <template>
     <div class="body">
         <div class="row" >
-            <div class="col-sm-2 box card">
+            <div class="col-sm-3 box card">
                 <!-- Block Height // Toatal Number of Block -->
                 <span class="too-big-font">{{ latestBlockHeight }}</span>
                 <span class="card-subheading" >Block Height</span>
             </div>
-            <div class="col-sm-2 box card">
+            <div class="col-sm-3 box card">
                 <!-- Toatal Number of Block -->
                 <span class="too-big-font">{{ transactionCount }}</span>
                 <span  class="card-subheading">Successful Txs</span>
             </div>
-            <div class="col-sm-2 box card">
+            <div class="col-sm-3 box card">
                 <!--  -->
                 <span class="too-big-font">{{ totalValidators }}</span>
                 <span  class="card-subheading">Total Validators</span>
             </div>
-            <div class="col-sm-2 box card">
+            <div class="col-sm-3 box card">
                 <!-- Toatal DID Count -->
                 <span class="too-big-font"> {{ totalDIDCount }}</span>
                 <span  class="card-subheading">Total DIDs</span>
             </div>
-            <div class="col-sm-2 box card">
+            <!-- <div class="col-sm-2 box card">
                 <span class="too-big-font">0</span>
                 <span  class="card-subheading">Total Credential Def.</span>
-            </div>
+            </div> -->
         </div>
         <div class="row block-tx-margin">
             <div class="col-md-6" >
