@@ -4,10 +4,10 @@
             <tr>
                 <th>Block</th>
                 <th>Hash</th>
-                <th>Result</th>
-                <th>Time</th>
+                <th>Status</th>
+                <th>Type</th>
             </tr>
-            <tr v-for="t in transactionList" v-bind="t.height">
+            <tr v-for="t in transactionList" v-bind="t.hash">
                 <td><a :href='`/blockdetails?height=${t.height}`'>{{t.height}}</a></td>
                 <!-- TODO -->
                 <td><a :href='`/txdetails?hash=0x${t.hash}`'>0x{{shorten(t.hash)}}</a></td>
@@ -19,7 +19,7 @@
                 <td v-else>
                     <span class="badge badge-danger">FAIL</span>
                 </td>
-                <td>{{getTimestampFromBlock(t.height)}}</td>
+                <td>{{getType(t.tx_result.events)}}</td>
             </tr>
         </table>
     </div>
@@ -34,18 +34,44 @@ export default Vue.extend({
     data() {
         return {
             transactionList: [],
-            timestamp: ""
+            timestamp: "",
+            tevents: {},
+            latestBlockHeight: ""
         }
     },
-    props: ['latestBlockHeight'],
+    props: ['newTxEventArrived'],
+    created() {
+        
+        this.getTop10Transactions();
+    },
     watch: {
-        latestBlockHeight() { 
+        newTxEventArrived() { 
             this.getTop10Transactions();
         }
     }, 
     
     methods: {
+        getType(events){
+            // console.log(JSON.stringify(events))
+            //  events.forEach(x => {
+            //     this.tevents[x.type] = x.attributes.map(x => {
+            //         x.key = x.key? atob(x.key): x.key
+            //         x.value = x.value? atob(x.value): x.value
+            //         return x    
+            //     })
+            //  })
+
+            //  console.log(JSON.stringify(this.tevents))
+
+            // let type = ""
+            // if(this.tevents.message){
+            //    type = this.tevents.message[0].value;
+            // }
+            return "bank";
+            
+        },
         async getTop10Transactions(){
+            this.latestBlockHeight  = this.$config.gblBlockHeight;
             if(!this.latestBlockHeight && this.latestBlockHeight !== 'undefined'){
                 return
             }
@@ -68,22 +94,24 @@ export default Vue.extend({
             return "Success"
         },
 
-        async getTimestampFromBlock(height) {
-            const block_detailAPI = `${this.$config.hid.HID_NODE_RPC_EP}/block?height=${height}`;
-            const res = await fetch(block_detailAPI)
-            const json = await res.json();
-            
-            const { result, error } = json;
-            if(error){
-                throw new Error(error)
-            }
-            console.log(result)
-            const { block } = result;
-            const timestamp = block.header.time;
 
-            const d =  new Date(timestamp);
-            return d.getTime();
-        },
+        ////// TODO: I am surpised that they do have timestamp field in the tx rpc
+        // async getTimestampFromBlock(height) {
+        //     const block_detailAPI = `${this.$config.hid.HID_NODE_RPC_EP}/block?height=${height}`;
+        //     const res = await fetch(block_detailAPI)
+        //     const json = await res.json();
+            
+        //     const { result, error } = json;
+        //     if(error){
+        //         throw new Error(error)
+        //     }
+        //     console.log(result)
+        //     const { block } = result;
+        //     const timestamp = block.header.time;
+
+        //     const d =  new Date(timestamp);
+        //     return d.getTime();
+        // },
         shorten(str){
             if(str.length <= 4){
                 return str

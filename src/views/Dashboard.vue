@@ -82,7 +82,7 @@
                         <label class="table-heading"> <font-awesome-icon icon="fa-solid fa-cubes" /> Latest Blocks</label>
                     </div>
                     <div class="col-md-6">
-                        <a class="float-right" :href='`/blocks?nextBlockHeight=${latestBlockHeight}`'>See More</a>
+                        <a class="float-right" :href='`/blocks`'>See More</a>
                     </div>
                 </div>
                 <div class="row">
@@ -97,12 +97,12 @@
                         <label class="table-heading"> <font-awesome-icon icon="fa-solid fa-file-invoice-dollar" /> Latest Transactions</label>
                     </div>
                     <div class="col-md-6">
-                        <a class="float-right" :href='`/transactions?nextBlockHeight=${latestBlockHeight}`'>See More</a>
+                        <a class="float-right" :href='`/transactions`'>See More</a>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <Transactions v-bind:latestBlockHeight='latestBlockHeight'  class="table-design"></Transactions>
+                        <Transactions v-bind:newTxEventArrived='newTxEventArrived'  class="table-design"></Transactions>
                     </div>
                 </div>
             </div>
@@ -146,15 +146,39 @@ export default {
                 },
             };
             that.connection.send(JSON.stringify(blockHeader));
+
+
+            const txHeader = {
+                jsonrpc: '2.0',
+                method: 'subscribe',
+                id: 0,
+                params: {
+                    query: 'tm.event=\'Tx\'',
+                },
+            };
+            that.connection.send(JSON.stringify(txHeader));
         };
 
         this.connection.onmessage = function({ data }) {
             const parseData = JSON.parse(data);
             const { result } = parseData;
-            that.latestBlockHeight = result.data.value.block.header.height
-            // that.$config.gblBlockHeight = that.latestBlockHeight;
-            // console.log('emitting newBlockHeightFoundEvent event')
-            // that.$emit("newBlockHeightFoundEvent", that.latestBlockHeight);
+            const { query } = result;
+            switch (query) {
+                case 'tm.event=\'NewBlock\'':
+                    that.latestBlockHeight = result.data.value.block.header.height    
+                    that.$config.gblBlockHeight = that.latestBlockHeight
+                    localStorage.set("latestBlockHeight", that.latestBlockHeight)
+                    break;
+        
+                case 'tm.event=\'Tx\'':
+                    that.newTxEventArrived = Date.now();
+                    break;
+        
+                default:
+                    break;
+            }
+            
+            
         };
         this.connection.onerror = function(error) {
             console.log("Websocket connection error ", error);

@@ -57,7 +57,8 @@ export default {
     },    
     async created(){
         const { nextBlockHeight} = this.$route.query
-        this.latestBlockHeight = nextBlockHeight
+        const h =  localStorage.getItem("latestBlockHeight")
+        this.latestBlockHeight = h? h: nextBlockHeight
         await this.getTop10Blocks();
     },
 
