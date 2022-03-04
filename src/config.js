@@ -21,6 +21,7 @@ export default {
     hid: {
         HID_NODE_RPC_EP: EnvProvider.value('HID_NODE_RPC_EP') || "http://localhost:26657",
         HID_NODE_SOCKET_EP: EnvProvider.value('HID_NODE_SOCKET_EP') || "ws://localhost:26657/websocket",
+        HID_NODE_REST_EP: EnvProvider.value('HID_NODE_REST_EP') || "http://localhost:1318",
     },
     recaptchaSiteKey: EnvProvider.value('RECAPTCHA_SITE_KEY'),
     

@@ -9,7 +9,7 @@
 <template>
     <div class="body">
         <h3>Top 50 Transactions</h3>
-        <div class="row" style="max-height: 500px; overflow-x: hidden; overflow-y: auto;">
+        <div class="row" style="max-height: 500px; overflow-x: hidden; overflow-y: auto;margin-top:3%">
             <div class="col-md-12">
                 <table class="table table-striped table-bordered table-sm">
                     <thead>
@@ -25,7 +25,13 @@
                         <td><a :href='`/blockdetails?height=${t.height}`'>{{t.height}}</a></td>
                         <!-- TODO -->
                         <td><a :href='`/txdetails?hash=0x${t.hash}`'>0x{{shorten(t.hash)}}</a></td>
-                        <td>{{checkTxStatus(t.tx_result.code)}}</td>
+
+                        <td v-if="t.tx_result.code == 0">
+                            <span class="badge badge-success">SUCCESS</span>
+                        </td>
+                        <td v-else>
+                            <span class="badge badge-danger">FAIL</span>
+                        </td>
                         <td>{{getTimestampFromBlock(t.height)}}</td>
                     </tr>
                     </tbody>
@@ -79,14 +85,6 @@ export default {
             this.transactionList = txs;
             this.latestBlockHeight = txs[0].height
         },
-
-        checkTxStatus(code) {
-            if (code !== 0) {
-                return "Fail"
-            }
-            return "Success"
-        },
-
         async getTimestampFromBlock(height) {
             const block_detailAPI = `${this.$config.hid.HID_NODE_RPC_EP}/block?height=${height}`;
             const res = await fetch(block_detailAPI)

@@ -129,6 +129,11 @@ export default {
           name: "Transactions",  
           path: "/transactions",
           isShow: true,
+        },
+        { 
+          name: "DIDs",  
+          path: "/dids",
+          isShow: true,
         }
       ]
     }

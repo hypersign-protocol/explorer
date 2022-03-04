@@ -41,7 +41,6 @@ export default Vue.extend({
     },   
     methods: {
         async getTop10Blocks(){
-            console.log('Inside Blocks Component - ' +  this.latestBlockHeight)
             if(!this.latestBlockHeight && this.latestBlockHeight !== 'undefined'){
                 return
             }

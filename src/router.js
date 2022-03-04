@@ -5,6 +5,7 @@ import BlockList from './views/BlockList';
 import TransactionList from './views/TransactionList';
 import Test from './views/Test';
 import TxDetails from './views/TransactionDetails'
+import DIDs from './views/DIDs'
 
 
 Vue.use(Router)
@@ -40,6 +41,11 @@ const router =  new Router({
       path: '/txdetails',
       name: "TxDetails",
       component: TxDetails
+    },
+    {
+      path: '/dids',
+      name: "Dids",
+      component: DIDs
     },
   ]
 })

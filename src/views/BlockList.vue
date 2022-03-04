@@ -9,7 +9,7 @@
 <template>
     <div class="body">
         <h3>Top 50 Blocks</h3>
-        <div class="row" style="max-height: 500px; overflow-x: hidden; overflow-y: auto;">
+        <div class="row" style="max-height: 500px; overflow-x: hidden; overflow-y: auto;margin-top:3%">
             <div class="col-md-12">
                 <table class="table table-striped table-bordered table-sm">
                     <thead>

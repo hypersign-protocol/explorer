@@ -66,11 +66,10 @@
             </div>
             <div class="col-sm-2 box card">
                 <!-- Toatal DID Count -->
-                <span class="too-big-font">0</span>
+                <span class="too-big-font"> {{ totalDIDCount }}</span>
                 <span  class="card-subheading">Total DIDs</span>
             </div>
             <div class="col-sm-2 box card">
-                <!-- Toatal DID Count -->
                 <span class="too-big-font">0</span>
                 <span  class="card-subheading">Total Credential Def.</span>
             </div>
@@ -126,7 +125,9 @@ export default {
             latestBlockHeight: 0,
             connection: null,
             transactionCount: 0,
-            totalValidators: 0
+            totalValidators: 0,
+            newTxEventArrived: "",
+            totalDIDCount: 0
         }
     },
     async created(){
@@ -167,10 +168,24 @@ export default {
                 case 'tm.event=\'NewBlock\'':
                     that.latestBlockHeight = result.data.value.block.header.height    
                     that.$config.gblBlockHeight = that.latestBlockHeight
-                    localStorage.set("latestBlockHeight", that.latestBlockHeight)
+                    localStorage.setItem("latestBlockHeight", that.latestBlockHeight)
                     break;
         
                 case 'tm.event=\'Tx\'':
+                    console.log('==========Tx event=======')
+                    console.log(JSON.stringify(result.events))
+                    const msg_action_type = result.events['message.action'][0]
+                    switch(msg_action_type){
+                        case 'create_did': 
+                            // Trigger event to update the did count
+                            break;
+
+                        case 'update_did':
+                            break;
+                        default: 
+                            break;
+                    }
+                    
                     that.newTxEventArrived = Date.now();
                     break;
         
@@ -187,8 +202,21 @@ export default {
     async updated(){
         await this.getTransactionCount();
         await this.getValidatorsCount();
+        this.updateDIDCount()
     },
     methods: {
+
+        async updateDIDCount(){
+            const transactionCountAPI = `${this.$config.hid.HID_NODE_REST_EP}/hypersign-protocol/hidnode/ssi/did?count=true&pagination.countTotal=true&pagination.reverse=false`
+            const res =  await fetch(transactionCountAPI)
+            const json = await res.json();
+            
+            const { totalDidCount } = json;
+            if(!totalDidCount){
+                throw new Error("Some error occurred while fetching did count")
+            }
+            this.totalDIDCount = totalDidCount;
+        },
 
         async getTransactionCount(){
             const event_name = "/cosmos.bank.v1beta1.MsgSend"
