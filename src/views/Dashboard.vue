@@ -101,7 +101,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <Transactions v-bind:newTxEventArrived='newTxEventArrived'  class="table-design"></Transactions>
+                        <Transactions v-bind:latestBlockHeight='latestBlockHeight' v-bind:newTxEventArrived='newTxEventArrived'  class="table-design"></Transactions>
                     </div>
                 </div>
             </div>

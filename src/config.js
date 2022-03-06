@@ -19,9 +19,9 @@ export default {
         description: EnvProvider.value('DESC')
     },
     hid: {
-        HID_NODE_RPC_EP: EnvProvider.value('HID_NODE_RPC_EP') || "http://localhost:26657",
-        HID_NODE_SOCKET_EP: EnvProvider.value('HID_NODE_SOCKET_EP') || "ws://localhost:26657/websocket",
-        HID_NODE_REST_EP: EnvProvider.value('HID_NODE_REST_EP') || "http://localhost:1318",
+        HID_NODE_RPC_EP: EnvProvider.value('HID_NODE_RPC_EP') || "https://stage.hypermine.in/network/node1-rpc",
+        HID_NODE_SOCKET_EP: EnvProvider.value('HID_NODE_SOCKET_EP') || "wss://stage.hypermine.in/network/node1-ws/",
+        HID_NODE_REST_EP: EnvProvider.value('HID_NODE_REST_EP') || "https://stage.hypermine.in/network/node1-rest",
     },
     recaptchaSiteKey: EnvProvider.value('RECAPTCHA_SITE_KEY'),
     

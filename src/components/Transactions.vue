@@ -39,18 +39,25 @@ export default Vue.extend({
             latestBlockHeight: ""
         }
     },
-    props: ['newTxEventArrived'],
+    computed:{
+    
+    },
+    props: ['newTxEventArrived', 'latestBlockHeight'],
     created() {
         
         this.getTop10Transactions();
     },
     watch: {
-        newTxEventArrived() { 
+        // newTxEventArrived() { 
+        //     this.getTop10Transactions();
+        // }
+        latestBlockHeight() {
             this.getTop10Transactions();
         }
     }, 
     
     methods: {
+        
         getType(events){
             // console.log(JSON.stringify(events))
             //  events.forEach(x => {
