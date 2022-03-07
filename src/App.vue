@@ -64,7 +64,7 @@
       <div class="col-md-4">        
         <!-- <h5 class="leftAlign">{{$config.app.name}}</h5>  -->
         <div class="form-group form-inline">
-          <a  href="/" >
+          <a  href="/explorer/dashboard/" >
             <img class='logo-style' src="https://hypermine.in/hypersign/wp-content/uploads/2020/01/Banner_logo2.png"> 
             <h4 class="subtitle" > <span style="font-size:small;"> {{$config.app.name}} ({{$config.app.version}}) </span></h4>
           </a>
