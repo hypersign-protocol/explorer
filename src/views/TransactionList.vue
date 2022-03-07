@@ -17,13 +17,13 @@
                         <th>Block</th>
                         <th>Hash</th>
                         <th>Result</th>
-                        <th>Time</th>
+                        <th>Type</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr v-for="t in transactionList" v-bind="t.height">
+                    <tr v-for="t in transactionList" v-bind="t.hash">
                         <td><a :href='`/explorer/blockdetails?height=${t.height}`'>{{t.height}}</a></td>
-                        <!-- TODO -->
+                        
                         <td><a :href='`/explorer/txdetails?hash=0x${t.hash}`'>0x{{shorten(t.hash)}}</a></td>
 
                         <td v-if="t.tx_result.code == 0">
@@ -32,7 +32,7 @@
                         <td v-else>
                             <span class="badge badge-danger">FAIL</span>
                         </td>
-                        <td>{{getTimestampFromBlock(t.height)}}</td>
+                        <td  v-html="getType(t.tx_result.events.filter(x => x.type == 'message'))"></td>
                     </tr>
                     </tbody>
                 </table>
@@ -57,7 +57,13 @@ export default {
     data() {
         return {
             transactionList: [],
-            latestBlockHeight: "2000"
+            latestBlockHeight: "2000",
+            badges: {
+                staking: "info",
+                bank: "primary",
+                create_did: "dark",
+                update_did: "dark"
+            }
         }
     },    
     async created(){
@@ -85,20 +91,32 @@ export default {
             this.transactionList = txs;
             this.latestBlockHeight = txs[0].height
         },
-        async getTimestampFromBlock(height) {
-            const block_detailAPI = `${this.$config.hid.HID_NODE_RPC_EP}/block?height=${height}`;
-            const res = await fetch(block_detailAPI)
-            const json = await res.json();
+        // async getTimestampFromBlock(height) {
+        //     const block_detailAPI = `${this.$config.hid.HID_NODE_RPC_EP}/block?height=${height}`;
+        //     const res = await fetch(block_detailAPI)
+        //     const json = await res.json();
             
-            const { result, error } = json;
-            if(error){
-                throw new Error(error)
-            }
-            const { block } = result;
-            const timestamp = block.header.time;
+        //     const { result, error } = json;
+        //     if(error){
+        //         throw new Error(error)
+        //     }
+        //     const { block } = result;
+        //     const timestamp = block.header.time;
 
-            const d =  new Date(timestamp);
-            return d.getTime();
+        //     const d =  new Date(timestamp);
+        //     return d.getTime();
+        // },
+        getType(events){
+            let moduleEvent = events.find(x => x.attributes[0].key === 'bW9kdWxl') // bW9kdWxl =  btoa('module')
+            const type = atob(moduleEvent.attributes[0].value)
+            let html = "";
+            if(this.badges[type]){
+                html = `<span class='badge badge-pill badge-${this.badges[type]}'>${type}</span>`
+
+            }else{
+                html = `<span class='badge badge-pill badge-secondary'>${type}</span>`
+            }
+            return html
         },
         shorten(str){
             if(str.length <= 4){

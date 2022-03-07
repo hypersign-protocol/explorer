@@ -19,14 +19,20 @@
                 <td v-else>
                     <span class="badge badge-danger">FAIL</span>
                 </td>
-                <td>{{getType(t.tx_result.events)}}</td>
+                <td  v-html="getType(t.tx_result.events.filter(x => x.type == 'message'))"></td>
             </tr>
         </table>
     </div>
 
 </template>
 
+
 <script lang="ts">
+
+// staking  <> <span class="badge badge-info">Info</span>
+// bank <> <span class="badge badge-primary">Primary</span>
+// create_did / update_did <> <span class="badge badge-dark">Dark</span>
+
 import Vue from 'vue'
 
 export default Vue.extend({
@@ -36,7 +42,14 @@ export default Vue.extend({
             transactionList: [],
             timestamp: "",
             tevents: {},
-            latestBlockHeight: ""
+            latestBlockHeight: "",
+            tempTxType: "",
+            badges: {
+                staking: "info",
+                bank: "primary",
+                create_did: "dark",
+                update_did: "dark"
+            }
         }
     },
     computed:{
@@ -57,25 +70,17 @@ export default Vue.extend({
     }, 
     
     methods: {
-        
         getType(events){
-            // console.log(JSON.stringify(events))
-            //  events.forEach(x => {
-            //     this.tevents[x.type] = x.attributes.map(x => {
-            //         x.key = x.key? atob(x.key): x.key
-            //         x.value = x.value? atob(x.value): x.value
-            //         return x    
-            //     })
-            //  })
+            let moduleEvent = events.find(x => x.attributes[0].key === 'bW9kdWxl') // bW9kdWxl =  btoa('module')
+            const type = atob(moduleEvent.attributes[0].value)
+            let html = "";
+            if(this.badges[type]){
+                html = `<span class='badge badge-pill badge-${this.badges[type]}'>${type}</span>`
 
-            //  console.log(JSON.stringify(this.tevents))
-
-            // let type = ""
-            // if(this.tevents.message){
-            //    type = this.tevents.message[0].value;
-            // }
-            return "bank";
-            
+            }else{
+                html = `<span class='badge badge-pill badge-secondary'>${type}</span>`
+            }
+            return html
         },
         async getTop10Transactions(){
             this.latestBlockHeight  = this.$config.gblBlockHeight;

@@ -43,7 +43,8 @@
                         <b>Gas Used:</b> {{ this.txDetails.gas_used }}
                     </li>
                     <li class="list-group-item" >
-                        <b>Type:</b><span class="badge badge-info"> {{ this.computedType  ?  this.computedType: "-" }}</span>
+                        <b>Type:</b>
+                        <span  v-html="getType(this.txDetails.tevents.message[0].value)"></span>
                     </li>
                     <li class="list-group-item" v-if="this.txDetails.tevents.type==='bank'">
                         <b>From:</b> <span class="badge badge-warning">{{ this.computedTransfer.sender }}</span>
@@ -90,7 +91,13 @@ export default {
             txData: "",
             blockHeight: "",
             txProof: "",
-            transfer: {}
+            transfer: {},
+            badges: {
+                staking: "info",
+                bank: "primary",
+                create_did: "dark",
+                update_did: "dark"
+            }
         }
     },
     computed: {
@@ -109,13 +116,6 @@ export default {
            }
             return this.txDetails.signature
         },
-        computedType: function(){
-            if(this.txDetails.tevents.message){
-                this.txDetails.tevents.type = this.txDetails.tevents.message[0].value;
-            }
-            return this.txDetails.tevents.type;
-        }
-
     },
     async created() {
         console.log('Inside TxDetails test page')
@@ -128,6 +128,17 @@ export default {
         this.getTransactionDetailsbyHash()
     },
     methods: {
+        getType(type){
+            this.txDetails.tevents.type = type;
+            let html = "";
+            if(this.badges[type]){
+                html = `<span class='badge badge-pill badge-${this.badges[type]}'>${type}</span>`
+
+            }else{
+                html = `<span class='badge badge-pill badge-secondary'>${type}</span>`
+            }
+            return html
+        },
          async getTransactionDetailsbyHash(){
             const api  = `${this.$config.hid.HID_NODE_RPC_EP}/tx?hash=${this.txHash}&prove=true`;
             const res =  await fetch(api)
@@ -151,9 +162,6 @@ export default {
 
 
             const {  tx_result, height, tx, proof  } = result;
-            
-            
-            console.log(JSON.stringify(tx_result))
             tx_result['tevents'] = {};
             tx_result.events.forEach(x => {
                 return tx_result['tevents'][x.type] = x.attributes.map(x => {
@@ -166,42 +174,6 @@ export default {
             
             Object.assign(this.txDetails, {...tx_result})
             this.txDetails.status = tx_result.code === 0 ? "SUCCESS": "FAIL";
-
-            // try{
-            //     if(tx_result.events.length > 0){
-                
-            //         // TODO: we should probably do like this
-            //         // const typeTransfer = tx_result.events.find(x => x.type === 'transfer')
-            //         // // console.log('===============================')
-            //         // if(typeTransfer){
-            //         //     this.txDetails.type = 'transfer';
-            //         //     this.txDetails.tEvents.transfer[atob(typeTransfer.attributes[0].key)] = atob(typeTransfer.attributes[0].value)
-            //         //     this.txDetails.tEvents.transfer[atob(typeTransfer.attributes[1].key)] = atob(typeTransfer.attributes[1].value)
-            //         //     this.txDetails.tEvents.transfer[atob(typeTransfer.attributes[2].key)] = atob(typeTransfer.attributes[2].value)
-            //         // } else {
-            //         //     console.log('No transfer event found')
-            //         // }
-
-
-            //         const typeMessage = tx_result.events.findOne(x => x.type === 'message')
-                    
-            //         console.log('===============ss================')
-            //         if(typeMessage){
-            //             this.txDetails.type = 'message';
-            //             this.txDetails.tEvents.message[atob(typeMessage.attributes[0].key)] = atob(typeMessage.attributes[0].value)
-            //             this.txDetails.tEvents.message[atob(typeMessage.attributes[1].key)] = atob(typeMessage.attributes[1].value)
-            //             this.txDetails.tEvents.message[atob(typeMessage.attributes[2].key)] = atob(typeTransfer.attributes[2].value)
-            //             console.log(JSON.stringify(this.txDetails.tEvents.message))
-            //         } else {
-            //             console.log('No message event found')
-            //         }
-            //     }
-            
-            // }catch(e){
-
-            // }
-            
-
 
             this.blockHeight = height
             this.txData = tx
