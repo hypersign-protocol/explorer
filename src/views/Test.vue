@@ -26,10 +26,11 @@
                         <b>Time:</b> {{ this.blockHeader.time }}
                     </li>
                     <li class="list-group-item">
-                        <b>Hash:</b> {{ this.blockHash }}
+                        
+                        <b>Hash:</b> <a :href='`/explorer/blockdetails?hash=0x${this.blockHash}`'>0x{{ this.blockHash }}</a>
                     </li>
                     <li class="list-group-item">
-                        <b>Last Block Hash:</b> {{ this.blockHeader.last_block_id.hash }}
+                        <b>Last Block Hash:</b> <a :href='`/explorer/blockdetails?hash=0x${this.blockHeader.last_block_id.hash}`'> 0x{{ this.blockHeader.last_block_id.hash }}</a>
                     </li>
                     <li class="list-group-item">
                         <b>Proposer :</b> {{ this.blockHeader.proposer_address }}

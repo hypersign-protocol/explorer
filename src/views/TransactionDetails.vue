@@ -18,7 +18,7 @@
                     <li class="list-group-item">
                         <div class="row">
                             <div class="col-md-8">
-                                <b>Hash:</b> {{ this.txHash }}
+                                <b>Hash:</b> <a :href='`/explorer/txdetails?hash=${this.txHash}`'>{{ this.txHash }}</a>
                             </div>
                             <div class="col-md-4">
                                 <span v-if="this.txDetails.status==='FAIL'" style="float:right">
@@ -30,9 +30,9 @@
                             </div>
                         </div>
                     </li>
-                     <li class="list-group-item">
-                        <b>Root Hash:</b> 0x{{ this.txProof.root_hash }}
-                    </li>
+                    <!-- <li class="list-group-item">
+                        <b>Root Hash:</b> <a :href='`/explorer/txdetails?hash=0x${this.txProof.root_hash}`'> 0x{{ this.txProof.root_hash }}</a>
+                    </li> -->
                     <li class="list-group-item">
                         <b>Height:</b><a :href='`/explorer/blockdetails?height=${this.blockHeight}`'> {{ this.blockHeight }}</a>
                     </li>
