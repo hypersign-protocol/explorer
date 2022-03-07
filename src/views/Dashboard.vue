@@ -96,7 +96,7 @@
                         <label class="table-heading"> <font-awesome-icon icon="fa-solid fa-file-invoice-dollar" /> Latest Transactions</label>
                     </div>
                     <div class="col-md-6">
-                        <a class="float-right" :href='`/transactions`'>See More</a>
+                        <a class="float-right" :href='`/explorer/transactions`'>See More</a>
                     </div>
                 </div>
                 <div class="row">
