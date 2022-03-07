@@ -15,35 +15,35 @@ const router =  new Router({
   routes: [
     {
       path: '/',
-      redirect: 'dashboard'
+      redirect: '/explorer/dashboard'
     },
     {
-      path: '/dashboard',
+      path: '/explorer/dashboard',
       name: "Dashboard",
       component: Dashboard
     },
     {
-      path: '/blocks',
+      path: '/explorer/blocks',
       name: "BlockList",
       component: BlockList
     },
     {
-      path: '/transactions',
+      path: '/explorer/transactions',
       name: "TransactionList",
       component: TransactionList
     },
     {
-      path: '/blockdetails',
+      path: '/explorer/blockdetails',
       name: "BlockDet",
       component: Test
     },
     {
-      path: '/txdetails',
+      path: '/explorer/txdetails',
       name: "TxDetails",
       component: TxDetails
     },
     {
-      path: '/dids',
+      path: '/explorer/dids',
       name: "Dids",
       component: DIDs
     },

@@ -22,9 +22,9 @@
                     </thead>
                     <tbody>
                     <tr v-for="t in transactionList" v-bind="t.height">
-                        <td><a :href='`/blockdetails?height=${t.height}`'>{{t.height}}</a></td>
+                        <td><a :href='`/explorer/blockdetails?height=${t.height}`'>{{t.height}}</a></td>
                         <!-- TODO -->
-                        <td><a :href='`/txdetails?hash=0x${t.hash}`'>0x{{shorten(t.hash)}}</a></td>
+                        <td><a :href='`/explorer/txdetails?hash=0x${t.hash}`'>0x{{shorten(t.hash)}}</a></td>
 
                         <td v-if="t.tx_result.code == 0">
                             <span class="badge badge-success">SUCCESS</span>
@@ -41,8 +41,8 @@
 
         <div class="row">
             <div class="col-md-12">
-                <a :href='`/transactions?nextBlockHeight=${parseInt(latestBlockHeight) - 50}`'> Previous </a> |
-                <a :href='`/transactions?nextBlockHeight=${parseInt(latestBlockHeight) + 50}`'> Next </a> 
+                <a :href='`/explorer/transactions?nextBlockHeight=${parseInt(latestBlockHeight) - 50}`'> Previous </a> |
+                <a :href='`/explorer/transactions?nextBlockHeight=${parseInt(latestBlockHeight) + 50}`'> Next </a> 
             </div>
         </div>
     </div>

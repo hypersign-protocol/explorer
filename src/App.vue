@@ -122,17 +122,17 @@ export default {
         },
         { 
           name: "Blocks",  
-          path: "/blocks",
+          path: "/explorer/blocks",
           isShow: true,
         },
         { 
           name: "Transactions",  
-          path: "/transactions",
+          path: "/explorer/transactions",
           isShow: true,
         },
         { 
           name: "DIDs",  
-          path: "/dids",
+          path: "/explorer/dids",
           isShow: true,
         }
       ]

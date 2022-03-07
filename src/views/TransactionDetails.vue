@@ -34,7 +34,7 @@
                         <b>Root Hash:</b> 0x{{ this.txProof.root_hash }}
                     </li>
                     <li class="list-group-item">
-                        <b>Height:</b><a :href='`/blockdetails?height=${this.blockHeight}`'> {{ this.blockHeight }}</a>
+                        <b>Height:</b><a :href='`/explorer/blockdetails?height=${this.blockHeight}`'> {{ this.blockHeight }}</a>
                     </li>
                     <li class="list-group-item">
                         <b>Gas Wanted:</b> {{ this.txDetails.gas_wanted }}

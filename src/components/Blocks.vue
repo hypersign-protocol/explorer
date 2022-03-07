@@ -10,9 +10,9 @@
             </tr>
             <tr v-for="b in  blockList" v-bind="b.block_id.hash">
             <!-- <tr :v-for="b in blocksList" :v-bind="b"> -->
-                <td><a :href='`/blockdetails?height=${b.block.header.height}`'>{{b.block.header.height}}</a></td>
+                <td><a :href='`/explorer/blockdetails?height=${b.block.header.height}`'>{{b.block.header.height}}</a></td>
                 <!-- TODO -->
-                <td><a :href='`/blockdetails?hash=0x${b.block_id.hash}`'>0x{{shorten(b.block_id.hash)}}</a></td>
+                <td><a :href='`/explorer/blockdetails?hash=0x${b.block_id.hash}`'>0x{{shorten(b.block_id.hash)}}</a></td>
                 <td>{{b.block.data.txs.length}}</td>
                 <td>{{formatDate(b.block.header.time)}}</td>
                 <td>{{shorten(b.block.header.proposer_address)}}</td>    

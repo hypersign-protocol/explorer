@@ -81,7 +81,7 @@
                         <label class="table-heading"> <font-awesome-icon icon="fa-solid fa-cubes" /> Latest Blocks</label>
                     </div>
                     <div class="col-md-6">
-                        <a class="float-right" :href='`/blocks`'>See More</a>
+                        <a class="float-right" :href='`/explorer/blocks`'>See More</a>
                     </div>
                 </div>
                 <div class="row">

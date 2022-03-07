@@ -8,9 +8,9 @@
                 <th>Type</th>
             </tr>
             <tr v-for="t in transactionList" v-bind="t.hash">
-                <td><a :href='`/blockdetails?height=${t.height}`'>{{t.height}}</a></td>
+                <td><a :href='`/explorer/blockdetails?height=${t.height}`'>{{t.height}}</a></td>
                 <!-- TODO -->
-                <td><a :href='`/txdetails?hash=0x${t.hash}`'>0x{{shorten(t.hash)}}</a></td>
+                <td><a :href='`/explorer/txdetails?hash=0x${t.hash}`'>0x{{shorten(t.hash)}}</a></td>
                 
                 
                 <td v-if="t.tx_result.code == 0">
