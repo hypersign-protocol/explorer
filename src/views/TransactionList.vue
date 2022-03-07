@@ -24,7 +24,7 @@
                     <tr v-for="t in transactionList" v-bind="t.hash">
                         <td><a :href='`/explorer/blockdetails?height=${t.height}`'>{{t.height}}</a></td>
                         
-                        <td><a :href='`/explorer/txdetails?hash=0x${t.hash}`'>0x{{shorten(t.hash)}}</a></td>
+                        <td><a :href='`/explorer/txdetails?hash=0x${t.hash}`'>0x{{(t.hash)}}</a></td>
 
                         <td v-if="t.tx_result.code == 0">
                             <span class="badge badge-success">SUCCESS</span>
@@ -67,8 +67,8 @@ export default {
         }
     },    
     async created(){
-        const { nextBlockHeight} = this.$route.query
-        const h =  localStorage.getItem("latestBlockHeight")
+        const { nextBlockHeight } = this.$route.query
+        const h =  this.$store.state.latestBlockHeight;
         this.latestBlockHeight = nextBlockHeight ?nextBlockHeight:  h 
         await this.getTopTransactions();
     },
@@ -107,25 +107,29 @@ export default {
         //     return d.getTime();
         // },
         getType(events){
-            let moduleEvent = events.find(x => x.attributes[0].key === 'bW9kdWxl') // bW9kdWxl =  btoa('module')
-            const type = atob(moduleEvent.attributes[0].value)
-            let html = "";
-            if(this.badges[type]){
-                html = `<span class='badge badge-pill badge-${this.badges[type]}'>${type}</span>`
+            let moduleEvent = events.find(x =>   x.attributes? x.attributes[0].key === 'bW9kdWxl': null) // bW9kdWxl =  btoa('module')
+            let html = "-";
+            if(moduleEvent && moduleEvent.attributes){
+                    const type = atob(moduleEvent.attributes[0].value)
+                    if(this.badges[type]){
+                        html = `<span class='badge badge-pill badge-${this.badges[type]}'>${type}</span>`
 
-            }else{
-                html = `<span class='badge badge-pill badge-secondary'>${type}</span>`
+                    }else{
+                        html = `<span class='badge badge-pill badge-secondary'>${type}</span>`
+                    }
             }
+
+            
             return html
         },
         shorten(str){
-            if(str.length <= 4){
+            if(str.length <= 10){
                 return str
             }
 
-            const f = str.substr(0,4)
+            const f = str.substr(0,10)
             const m = "..."
-            const l = str.substr(str.length - 4, 4);
+            const l = str.substr(str.length - 10, 10);
             return f+m+l;
         }
 

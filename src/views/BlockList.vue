@@ -52,22 +52,20 @@ export default {
     data() {
         return {
             blockList: [],
-            latestBlockHeight: "2000"
+            latestBlockHeight: ""
         }
     },    
     async created(){
+
         const { nextBlockHeight} = this.$route.query
-        const h =  localStorage.getItem("latestBlockHeight")
+        const h =  this.$store.state.latestBlockHeight;
         this.latestBlockHeight = nextBlockHeight ? nextBlockHeight: h;
+        
         await this.getTop10Blocks();
     },
 
     methods: {
         async getTop10Blocks(){
-            console.log('Inside BlocksList Component - ' +  this.$config.gblBlockHeight)
-            // if(!this.latestBlockHeight && this.latestBlockHeight !== 'undefined'){
-            //     return
-            // }
             const block_searchAPI = `${this.$config.hid.HID_NODE_RPC_EP}/block_search?query="block.height<${this.latestBlockHeight}"&page=1&per_page=50&order_by="desc"`;
             const res =  await fetch(block_searchAPI)
             const json = await res.json();
