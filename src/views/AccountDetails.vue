@@ -56,9 +56,6 @@ export default {
             const json = await res.json();
             
             const { balances } = json;
-            if(error){
-                throw new Error(error)
-            }
             this.balances = balances
         },
     }
