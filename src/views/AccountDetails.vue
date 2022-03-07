@@ -12,11 +12,13 @@
             </div>
         </div>
         <div class="row" style="text-align: left;">
-            <div class="col-md-12" v-if="balances.length > 0">
-                <ul class="list-group">
-                    <li class="list-group-item"><b>Address :</b>{{ accountId }} </li>
-                    <li class="list-group-item"><b>Tokens :</b> {{ balances[0].denom.substr(1).toUpperCase() }} </li>
-                    <li class="list-group-item"><b>Balance:</b> {{ balances[0].amount / exponent  }} </li>
+            <h5>Account: {{ accountId }}</h5>
+        </div>
+        <div class="row" style="text-align: left;" v-for="balance in balances" v-bind="balance">
+            <div class="col-md-12">
+                <ul class="list-group" >
+                    <li class="list-group-item"><b>Tokens :</b> {{ balance.denom }} </li>
+                    <li class="list-group-item"><b>Balance:</b> {{ balance.amount }} </li>
                 </ul>
             </div>
         </div>
@@ -32,24 +34,20 @@ export default {
         return {
             accountId:"hid1307cjccpulp88cqu5tfnzl25ssv7csyqt7vwqm",
             exponent: 10000000, // 1 million
-            balances: [
-    {
-      "denom": "uhid",
-      "amount": "6850"
-    }
-  ]    
+            balances:[
+   
+            ]  
         }
     },
     async created() {
         console.log('Inside accountDetails test page')
         const { accountId } = this.$route.params;
-        console.log(accountId)
         if(!accountId){
             console.error('accountId is not passed')
             return;
         }
         this.accountId = accountId;
-        this.getTransactionDetailsbyHash()
+        await this.getTransactionDetailsbyHash()
     },
     methods: {
          async getTransactionDetailsbyHash(){
