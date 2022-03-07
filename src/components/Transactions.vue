@@ -19,7 +19,10 @@
                 <td v-else>
                     <span class="badge badge-danger">FAIL</span>
                 </td>
-                <td  v-html="getType(t.tx_result.events.filter(x => x.type == 'message'))"></td>
+                <td>
+                    <div v-if="t.tx_result.events.filter(x => x.type == 'message').length > 0" v-html="getType(t.tx_result.events.filter(x => x.type == 'message'))"></div>
+                    <div v-else>-</div>
+                </td>
             </tr>
         </table>
     </div>
@@ -53,25 +56,28 @@ export default Vue.extend({
         }
     },
     computed:{
-    
+        newEventTrigger(){
+            return this.$store.state.txEventTrigger
+        }
     },
-    props: ['newTxEventArrived', 'latestBlockHeight'],
-    created() {
+    created(){        
+        setTimeout(()=> {
+           this.getTop10Transactions()
+        }, 3000)
         
-        this.getTop10Transactions();
     },
     watch: {
-        // newTxEventArrived() { 
-        //     this.getTop10Transactions();
-        // }
-        latestBlockHeight() {
+        newEventTrigger() {
             this.getTop10Transactions();
         }
     }, 
-    
     methods: {
         getType(events){
             let moduleEvent = events.find(x => x.attributes[0].key === 'bW9kdWxl') // bW9kdWxl =  btoa('module')
+            if(!moduleEvent){
+                return ""
+            }
+
             const type = atob(moduleEvent.attributes[0].value)
             let html = "";
             if(this.badges[type]){
@@ -83,11 +89,11 @@ export default Vue.extend({
             return html
         },
         async getTop10Transactions(){
-            this.latestBlockHeight  = this.$config.gblBlockHeight;
+            this.latestBlockHeight = this.$store.state.latestBlockHeight
             if(!this.latestBlockHeight && this.latestBlockHeight !== 'undefined'){
                 return
             }
-            const transaction_searchAPI = `${this.$config.hid.HID_NODE_RPC_EP}/tx_search?query="tx.height<${this.latestBlockHeight}"&prove=true&page=1&per_page=10&order_by="desc"`;
+            const transaction_searchAPI = `${this.$config.hid.HID_NODE_RPC_EP}/tx_search?query="tx.height<=${this.latestBlockHeight}"&prove=true&page=1&per_page=10&order_by="desc"`;
             const res =  await fetch(transaction_searchAPI)
             const json = await res.json();
             

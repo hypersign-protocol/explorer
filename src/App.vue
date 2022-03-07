@@ -81,6 +81,145 @@
   </div>
 </template>
 
+<script>
+export default {
+  name: 'app',
+  data(){
+    return {
+      menu: [
+        { 
+          name: "Dashboard",  
+          path: "/",
+          isShow: true,
+        },
+        { 
+          name: "Blocks",  
+          path: "/explorer/blocks",
+          isShow: true,
+        },
+        { 
+          name: "Transactions",  
+          path: "/explorer/transactions",
+          isShow: true,
+        },
+        { 
+          name: "DIDs",  
+          path: "/explorer/dids",
+          isShow: true,
+        }
+      ],
+      latestBlockHeight: 0,
+      connection: null,
+      newTxEventArrived: ""
+    }
+  },
+   async created(){
+        this.connection = new WebSocket(`${this.$config.hid.HID_NODE_SOCKET_EP}`);
+        const that =  this;
+        this.connection.onopen = function() {
+            console.log("Socket connection is open");
+
+            const blockHeader = {
+                jsonrpc: '2.0',
+                method: 'subscribe',
+                id: 0,
+                params: {
+                    query: 'tm.event=\'NewBlock\'',
+                },
+            };
+            console.log("Subscribing to NewBlock Event");
+            that.connection.send(JSON.stringify(blockHeader));
+
+
+            const txHeader = {
+                jsonrpc: '2.0',
+                method: 'subscribe',
+                id: 0,
+                params: {
+                    query: 'tm.event=\'Tx\'',
+                },
+            };
+            console.log("Subscribing to Tx event");
+            that.connection.send(JSON.stringify(txHeader));
+
+            const valHeader = {
+                jsonrpc: '2.0',
+                method: 'subscribe',
+                id: 0,
+                params: {
+                    query: 'tm.event=\'ValidatorSetUpdates\'',
+                },
+            };
+            console.log("Subscribing to ValidatorSetUpdates event");
+            that.connection.send(JSON.stringify(valHeader));
+        };
+
+        this.connection.onmessage = function({ data }) {
+            
+            const parseData = JSON.parse(data);
+            const { result } = parseData;
+            const { query } = result;
+            
+            switch (query) {
+                case 'tm.event=\'NewBlock\'':
+                    that.$store.commit("updateBlockHeightInStore", result.data.value.block.header.height);
+                    break;
+                case 'tm.event=\'ValidatorSetUpdates\'':
+                    console.log('ValidatorSetUpdates event arrived')
+                    console.log(data, undefined, 2)
+                    //that.$store.commit("updatetxCreateDIDEventTriggerInStore");
+                    break;
+                case 'tm.event=\'Tx\'':
+                  const msg_action_type = result.events['message.action'] ? result.events['message.action'][0] : null;
+                  console.log('xxxxxxxxxxxxxxxxxxxx Tx Event Arrived xxxxxxxxxxxxxxxxx')
+                  console.log(JSON.stringify(result, undefined, 2))
+                  if(msg_action_type){
+                     switch(msg_action_type){
+                        case 'create_did': 
+                            console.log('xxxxxxxxxxxxxxxxxxxx Create Tx Event Arrived xxxxxxxxxxxxxxxxx')
+                            that.$store.commit("updatetxCreateDIDEventTriggerInStore", result.events['tx.hash'][0]);
+                            break;
+
+                        case 'update_did':
+                            break;
+                        default: 
+                            break;
+                    }
+                  }
+                  that.$store.commit("updateTxEventTriggerInStore", result.events['tx.hash'][0]);
+                  break;
+        
+                default:
+                    break;
+            }
+            
+            
+        };
+        this.connection.onerror = function(error) {
+            console.log("Websocket connection error ", error);
+        };
+  },
+  methods: {
+    goToNextPage(route){
+      const r = this.menu.find(x => x.name === route)
+      if(r.name === "Studio") {
+        window.location.href = this.$config.studio.BASE_URL + "login"
+      }
+      this.$router.push(r.path)
+      if(this.$route.params.nextUrl != null){
+                    this.$router.push(this.$route.params.nextUrl)
+                }else{
+        this.$router.push(r.path)
+                }
+    }
+  }
+}
+</script>
+
+
+
+
+
 <style>
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
@@ -108,51 +247,3 @@
   margin-right: auto;
 }
 </style>
-
-<script>
-export default {
-  name: 'app',
-  data(){
-    return {
-      menu: [
-        { 
-          name: "Dashboard",  
-          path: "/",
-          isShow: true,
-        },
-        { 
-          name: "Blocks",  
-          path: "/explorer/blocks",
-          isShow: true,
-        },
-        { 
-          name: "Transactions",  
-          path: "/explorer/transactions",
-          isShow: true,
-        },
-        { 
-          name: "DIDs",  
-          path: "/explorer/dids",
-          isShow: true,
-        }
-      ]
-    }
-  },
-  methods: {
-    goToNextPage(route){
-      const r = this.menu.find(x => x.name === route)
-      if(r.name === "Studio") {
-        window.location.href = this.$config.studio.BASE_URL + "login"
-      }
-      this.$router.push(r.path)
-      if(this.$route.params.nextUrl != null){
-                    this.$router.push(this.$route.params.nextUrl)
-                }else{
-        this.$router.push(r.path)
-                }
-    }
-  }
-}
-</script>
-
-

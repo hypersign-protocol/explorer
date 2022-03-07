@@ -51,7 +51,7 @@
         <div class="row" >
             <div class="col-sm-3 box card">
                 <!-- Block Height // Toatal Number of Block -->
-                <span class="too-big-font">{{ latestBlockHeight }}</span>
+                <span class="too-big-font">{{ heightInStore }}</span>
                 <span class="card-subheading" >Block Height</span>
             </div>
             <div class="col-sm-3 box card">
@@ -86,7 +86,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <Blocks v-bind:latestBlockHeight='latestBlockHeight' class="table-design"></Blocks>
+                        <Blocks class="table-design"></Blocks>
                     </div>
                 </div>
             </div>
@@ -101,7 +101,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <Transactions v-bind:latestBlockHeight='latestBlockHeight' v-bind:newTxEventArrived='newTxEventArrived'  class="table-design"></Transactions>
+                        <Transactions class="table-design"></Transactions>
                     </div>
                 </div>
             </div>
@@ -130,79 +130,36 @@ export default {
             totalDIDCount: 0
         }
     },
-    async created(){
-        
-        this.connection = new WebSocket(`${this.$config.hid.HID_NODE_SOCKET_EP}`);
-      
-        const that =  this;
-        this.connection.onopen = function() {
-            console.log("Socket connection is open");
+    computed:{
+        heightInStore(){
+            return this.$store.state.latestBlockHeight
+        },
+        newEventTriggerForCreateDID(){
+            return this.$store.state.txCreateDIDEventTrigger
+        },
+        newTxEventTrigger(){
+            return this.$store.state.txEventTrigger
+        },
+        newTxCreateDIDEventTrigger(){
+            return this.$store.state.txCreateDIDEventTrigger
+        }
 
-            const blockHeader = {
-                jsonrpc: '2.0',
-                method: 'subscribe',
-                id: 0,
-                params: {
-                    query: 'tm.event=\'NewBlock\'',
-                },
-            };
-            that.connection.send(JSON.stringify(blockHeader));
-
-
-            const txHeader = {
-                jsonrpc: '2.0',
-                method: 'subscribe',
-                id: 0,
-                params: {
-                    query: 'tm.event=\'Tx\'',
-                },
-            };
-            that.connection.send(JSON.stringify(txHeader));
-        };
-
-        this.connection.onmessage = function({ data }) {
-            const parseData = JSON.parse(data);
-            const { result } = parseData;
-            const { query } = result;
-            switch (query) {
-                case 'tm.event=\'NewBlock\'':
-                    that.latestBlockHeight = result.data.value.block.header.height    
-                    that.$config.gblBlockHeight = that.latestBlockHeight
-                    localStorage.setItem("latestBlockHeight", that.latestBlockHeight)
-                    break;
-        
-                case 'tm.event=\'Tx\'':
-                    console.log('==========Tx event=======')
-                    console.log(JSON.stringify(result.events))
-                    const msg_action_type = result.events['message.action'][0]
-                    switch(msg_action_type){
-                        case 'create_did': 
-                            // Trigger event to update the did count
-                            break;
-
-                        case 'update_did':
-                            break;
-                        default: 
-                            break;
-                    }
-                    
-                    that.newTxEventArrived = Date.now();
-                    break;
-        
-                default:
-                    break;
-            }
-            
-            
-        };
-        this.connection.onerror = function(error) {
-            console.log("Websocket connection error ", error);
-        };
     },
-    async updated(){
-        await this.getTransactionCount();
-        await this.getValidatorsCount();
-        this.updateDIDCount()
+    watch:{
+        newEventTriggerForCreateDID(){
+           this.updateDIDCount()
+        },
+        newTxEventTrigger(){
+            this.getTransactionCount();
+        },
+        newTxCreateDIDEventTrigger(){
+            this.updateDIDCount();
+        }
+    },
+    async created(){
+        this.getTransactionCount();
+        this.getValidatorsCount();
+        this.updateDIDCount();
     },
     methods: {
 

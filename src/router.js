@@ -6,6 +6,7 @@ import TransactionList from './views/TransactionList';
 import Test from './views/Test';
 import TxDetails from './views/TransactionDetails'
 import DIDs from './views/DIDs'
+import AccountDetails from './views/AccountDetails';
 
 
 Vue.use(Router)
@@ -50,6 +51,11 @@ const router =  new Router({
       path: '/explorer/dids',
       name: "Dids",
       component: DIDs
+    },
+    {
+      path: '/explorer/account/:accountId',
+      name: "Account Details",
+      component: AccountDetails
     },
   ]
 })

@@ -31,20 +31,31 @@ export default Vue.extend({
     data() {
         return {        
            blockList: [],
+           latestBlockHeight: ""
         }
     },
-    props: ['latestBlockHeight'],
+    created(){   
+        this.latestBlockHeight = this.heightInStore      
+        this.getTop10Blocks()
+    },
+    computed:{
+        heightInStore(){
+            return this.$store.state.latestBlockHeight
+        }
+    },
     watch: {
-        latestBlockHeight() { 
+        heightInStore() { 
+            this.latestBlockHeight = this.heightInStore 
             this.getTop10Blocks();
         }
     },   
+   
     methods: {
         async getTop10Blocks(){
             if(!this.latestBlockHeight && this.latestBlockHeight !== 'undefined'){
                 return
             }
-            const block_searchAPI = `${this.$config.hid.HID_NODE_RPC_EP}/block_search?query="block.height<${this.latestBlockHeight}"&page=1&per_page=10&order_by="desc"`;
+            const block_searchAPI = `${this.$config.hid.HID_NODE_RPC_EP}/block_search?query="block.height<=${this.latestBlockHeight}"&page=1&per_page=10&order_by="desc"`;
             const res =  await fetch(block_searchAPI)
             const json = await res.json();
             

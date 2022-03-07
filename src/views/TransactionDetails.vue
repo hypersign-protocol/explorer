@@ -44,13 +44,13 @@
                     </li>
                     <li class="list-group-item" >
                         <b>Type:</b>
-                        <span  v-html="getType(this.txDetails.tevents.message[0].value)"></span>
+                        <span v-if="this.txDetails.tevents.message" v-html="getType(this.txDetails.tevents.message[0].value)"></span>
                     </li>
                     <li class="list-group-item" v-if="this.txDetails.tevents.type==='bank'">
-                        <b>From:</b> <span class="badge badge-warning">{{ this.computedTransfer.sender }}</span>
+                        <b>From:</b> <span class="badge badge-warning"><a :href='`/explorer/account/${this.computedTransfer.sender}`' target="_blank">{{ this.computedTransfer.sender }}</a></span>
                     </li>
                     <li class="list-group-item" v-if="this.txDetails.tevents.type==='bank'">
-                        <b>To:</b> <span class="badge badge-warning">{{   this.computedTransfer.recipient }}</span>
+                        <b>To:</b> <span class="badge badge-warning"><a :href='`/explorer/account/${this.computedTransfer.recipient}`' target="_blank">{{   this.computedTransfer.recipient }}</a></span>
                     </li>
                     <li class="list-group-item" v-if="this.txDetails.tevents.type==='bank'">
                         <b>Amount:</b> <span class="badge badge-warning">{{  this.computedTransfer.amount  }}</span>
