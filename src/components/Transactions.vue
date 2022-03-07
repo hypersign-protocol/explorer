@@ -73,11 +73,18 @@ export default Vue.extend({
     }, 
     methods: {
         getType(events){
+            // console.log(JSON.stringify(events[0].attributes))
+            // console.log(atob(events[0].attributes[0].key))
+            // console.log(atob(events[0].attributes[0].value))
             let moduleEvent = events.find(x => x.attributes[0].key === 'bW9kdWxl') // bW9kdWxl =  btoa('module')
             if(!moduleEvent){
-                return ""
+                moduleEvent = events.find(x => x.attributes[0].key === 'YWN0aW9u') // bW9kdWxl =  btoa('action')
             }
 
+            if(!moduleEvent){
+                return "-"
+            }
+            
             const type = atob(moduleEvent.attributes[0].value)
             let html = "";
             if(this.badges[type]){
