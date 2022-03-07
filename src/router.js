@@ -14,6 +14,10 @@ const router =  new Router({
   mode: 'history',
   routes: [
     {
+      path: '/explorer',
+      redirect: '/explorer/dashboard'
+    },
+    {
       path: '/',
       redirect: '/explorer/dashboard'
     },
