@@ -45,7 +45,7 @@ const store = new Vuex.Store({
       state.txEventTrigger = newTxHash;
     },
     updatetxCreateDIDEventTriggerInStore(state, newCreateDidTxHash) {
-      console.log('------  updatetxCreateDIDEventTriggerInStore  ' +  newCreateDidTxHash)
+      // console.log('------  updatetxCreateDIDEventTriggerInStore  ' +  newCreateDidTxHash)
 
       state.txCreateDIDEventTrigger = newCreateDidTxHash;
     },

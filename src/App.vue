@@ -165,18 +165,18 @@ export default {
                     that.$store.commit("updateBlockHeightInStore", result.data.value.block.header.height);
                     break;
                 case 'tm.event=\'ValidatorSetUpdates\'':
-                    console.log('ValidatorSetUpdates event arrived')
-                    console.log(data, undefined, 2)
+                    // console.log('ValidatorSetUpdates event arrived')
+                    // console.log(data, undefined, 2)
                     //that.$store.commit("updatetxCreateDIDEventTriggerInStore");
                     break;
                 case 'tm.event=\'Tx\'':
                   const msg_action_type = result.events['message.action'] ? result.events['message.action'][0] : null;
-                  console.log('xxxxxxxxxxxxxxxxxxxx Tx Event Arrived xxxxxxxxxxxxxxxxx')
-                  console.log(JSON.stringify(result, undefined, 2))
+                  // console.log('xxxxxxxxxxxxxxxxxxxx Tx Event Arrived xxxxxxxxxxxxxxxxx')
+                  // console.log(JSON.stringify(result, undefined, 2))
                   if(msg_action_type){
                      switch(msg_action_type){
                         case 'create_did': 
-                            console.log('xxxxxxxxxxxxxxxxxxxx Create Tx Event Arrived xxxxxxxxxxxxxxxxx')
+                            // console.log('xxxxxxxxxxxxxxxxxxxx Create Tx Event Arrived xxxxxxxxxxxxxxxxx')
                             that.$store.commit("updatetxCreateDIDEventTriggerInStore", result.events['tx.hash'][0]);
                             break;
 
