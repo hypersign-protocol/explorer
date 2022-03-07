@@ -63,7 +63,7 @@ export default Vue.extend({
     created(){        
         setTimeout(()=> {
            this.getTop10Transactions()
-        }, 3000)
+        }, 5000)
         
     },
     watch: {
