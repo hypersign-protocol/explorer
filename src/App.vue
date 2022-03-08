@@ -106,6 +106,11 @@ export default {
           name: "DIDs",  
           path: "/explorer/dids",
           isShow: true,
+        },
+        { 
+          name: "Wallet",  
+          path: "https://wallet.hypermine.in/",
+          isShow: true,
         }
       ],
       latestBlockHeight: 0,
@@ -202,8 +207,11 @@ export default {
   methods: {
     goToNextPage(route){
       const r = this.menu.find(x => x.name === route)
-      if(r.name === "Studio") {
-        window.location.href = this.$config.studio.BASE_URL + "login"
+      if(r.name === "Wallet") {
+        return window.open(
+          r.path,
+          '_blank' // <- This is what makes it open in a new window.
+        );
       }
       this.$router.push(r.path)
       if(this.$route.params.nextUrl != null){
