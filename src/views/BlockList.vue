@@ -57,11 +57,13 @@ export default {
     },    
     async created(){
 
-        const { nextBlockHeight} = this.$route.query
-        const h =  this.$store.state.latestBlockHeight;
-        this.latestBlockHeight = nextBlockHeight ? nextBlockHeight: h;
+        setTimeout(async () => {
+            const { nextBlockHeight} = this.$route.query
+            const h =  this.$store.state.latestBlockHeight;
+            this.latestBlockHeight = nextBlockHeight ? nextBlockHeight: h;
+            await this.getTop10Blocks();
+        }, 5000)
         
-        await this.getTop10Blocks();
     },
 
     methods: {
@@ -75,9 +77,10 @@ export default {
                 throw new Error(error)
             }
             const { blocks } = result;
-            this.blockList = blocks;
-            console.log(blocks[0].block.header.height)
-            this.latestBlockHeight = blocks[0].block.header.height
+            if(blocks){
+                this.blockList = blocks;
+                this.latestBlockHeight = blocks[0].block.header.height
+            }
         },
 
         formatDate(date){

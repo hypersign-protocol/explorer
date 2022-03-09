@@ -67,10 +67,12 @@ export default {
         }
     },    
     async created(){
-        const { nextBlockHeight } = this.$route.query
-        const h =  this.$store.state.latestBlockHeight;
-        this.latestBlockHeight = nextBlockHeight ?nextBlockHeight:  h 
-        await this.getTopTransactions();
+         setTimeout(async () => {
+            const { nextBlockHeight } = this.$route.query
+            const h =  this.$store.state.latestBlockHeight;
+            this.latestBlockHeight = nextBlockHeight ?nextBlockHeight:  h 
+            await this.getTopTransactions();
+        }, 5000)
     },
 
     methods: {
@@ -91,24 +93,17 @@ export default {
             this.transactionList = txs;
             this.latestBlockHeight = txs[0].height
         },
-        // async getTimestampFromBlock(height) {
-        //     const block_detailAPI = `${this.$config.hid.HID_NODE_RPC_EP}/block?height=${height}`;
-        //     const res = await fetch(block_detailAPI)
-        //     const json = await res.json();
-            
-        //     const { result, error } = json;
-        //     if(error){
-        //         throw new Error(error)
-        //     }
-        //     const { block } = result;
-        //     const timestamp = block.header.time;
-
-        //     const d =  new Date(timestamp);
-        //     return d.getTime();
-        // },
+        
         getType(events){
-            let moduleEvent = events.find(x =>   x.attributes? x.attributes[0].key === 'bW9kdWxl': null) // bW9kdWxl =  btoa('module')
+            let moduleEvent = events.find(x => x.attributes[0].key === 'bW9kdWxl') // bW9kdWxl =  btoa('module')
+            if(!moduleEvent){
+                moduleEvent = events.find(x => x.attributes[0].key === 'YWN0aW9u') // bW9kdWxl =  btoa('action')
+            }
+            if(!moduleEvent){
+                return "-"
+            }
             let html = "-";
+            
             if(moduleEvent && moduleEvent.attributes){
                     const type = atob(moduleEvent.attributes[0].value)
                     if(this.badges[type]){
@@ -117,9 +112,7 @@ export default {
                     }else{
                         html = `<span class='badge badge-pill badge-secondary'>${type}</span>`
                     }
-            }
-
-            
+            }            
             return html
         },
         shorten(str){

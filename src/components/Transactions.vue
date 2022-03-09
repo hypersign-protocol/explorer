@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div>          
         <table class="table  table-striped table-bordered table-sm">
             <tr>
                 <th>Block</th>
@@ -32,9 +32,6 @@
 
 <script lang="ts">
 
-// staking  <> <span class="badge badge-info">Info</span>
-// bank <> <span class="badge badge-primary">Primary</span>
-// create_did / update_did <> <span class="badge badge-dark">Dark</span>
 
 import Vue from 'vue'
 
@@ -73,9 +70,6 @@ export default Vue.extend({
     }, 
     methods: {
         getType(events){
-            // console.log(JSON.stringify(events[0].attributes))
-            // console.log(atob(events[0].attributes[0].key))
-            // console.log(atob(events[0].attributes[0].value))
             let moduleEvent = events.find(x => x.attributes[0].key === 'bW9kdWxl') // bW9kdWxl =  btoa('module')
             if(!moduleEvent){
                 moduleEvent = events.find(x => x.attributes[0].key === 'YWN0aW9u') // bW9kdWxl =  btoa('action')

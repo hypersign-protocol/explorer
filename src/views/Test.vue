@@ -8,7 +8,7 @@
     <div class="body">
         <div class="row">
             <div class="col-md-12">
-                <h3> Block Details For {{ blockHeight }} </h3>
+                <h3> Details for Block #{{ blockHeight }} </h3>
             </div>
         </div>
         
@@ -38,13 +38,14 @@
                 </ul>
             </div>
         </div>
-        <div class="row" style="margin-top:2%">
-            <h5><font-awesome-icon icon="fa-solid fa-file-invoice-dollar" /> Transactions ({{this.blockTransactions.length}})</h5>
-            <div class="col-md-12">
-                
-                <!-- Block Transactions -->
-                
-                <!-- Compoent which fetchs all tractins in  that block -->
+        <div class="row" style="margin-top:2%; text-align: left;font-size:small" >
+            <h5><font-awesome-icon icon="fa-solid fa-file-invoice-dollar" /> Transactions ({{ this.blockTransactions.length }})</h5>
+            <div class="col-md-12" v-if="this.blockTransactions.length > 0">
+                <ul class="list-group">
+                    <li  class="list-group-item" v-for="tx in this.blockTransactions" v-bind="tx">
+                        <a :href='`/explorer/txdetails?hash=0x${tx}`'>0x{{(tx)}}</a>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
@@ -52,6 +53,7 @@
 
 
 <script>
+import parseTx from "../utils/decodeHidTx";
 export default {
     name: 'Test',
     data() {
@@ -76,6 +78,7 @@ export default {
     },
     methods: {
          async getBlockDetails(){
+             try{
               let api  = ""
               console.log()
             if(this.blockHeight != "" && this.blockHeight != 'NaN'){
@@ -94,10 +97,40 @@ export default {
             console.log(result)
             const {  block, block_id } = result;
             this.blockHeader = block.header;
-            this.blockTransactions = block.data.txs;
             this.blockHash  = block_id.hash
             this.blockHeight = this.blockHeader.height
+            
+            
+
+
+
+
+            this.blockTransactions = await this.getTxHashsAtHeight(this.blockHeight)
+              }catch(e){
+                console.error(e)    
+                
+            }
+            
+            
         },
+
+        async getTxHashsAtHeight(height){
+            
+            
+                const api = `${this.$config.hid.HID_NODE_REST_EP}/txs?tx.height=${height}`
+                const res =  await fetch(api)
+                const json = await res.json();
+                
+                const { txs } = json;
+                if(txs){
+                    return txs.map(x => x.txhash)   
+                }else {
+                    return []
+                }
+                
+          
+            
+        }
     }
 
 }

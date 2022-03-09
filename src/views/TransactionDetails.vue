@@ -30,39 +30,62 @@
                             </div>
                         </div>
                     </li>
-                    <!-- <li class="list-group-item">
-                        <b>Root Hash:</b> <a :href='`/explorer/txdetails?hash=0x${this.txProof.root_hash}`'> 0x{{ this.txProof.root_hash }}</a>
-                    </li> -->
+                    
                     <li class="list-group-item">
                         <b>Height:</b><a :href='`/explorer/blockdetails?height=${this.blockHeight}`'> {{ this.blockHeight }}</a>
                     </li>
                     <li class="list-group-item">
-                        <b>Gas Wanted:</b> {{ this.txDetails.gas_wanted }}
-                    </li>
-                    <li class="list-group-item">
-                        <b>Gas Used:</b> {{ this.txDetails.gas_used }}
+                        <b>Gas (Used / Wanted):</b> {{ this.txDetails.gas_used }} / {{ this.txDetails.gas_wanted }}
                     </li>
                     <li class="list-group-item" >
                         <b>Type:</b>
                         <span v-if="this.txDetails.tevents.message" v-html="getType(this.txDetails.tevents.message[0].value)"></span>
                     </li>
+                    
+                    <!-- For DID -->
+                    <li class="list-group-item" v-if="this.didDetails != null">
+                        <b>Creator:</b> <span class="badge badge-warning"><a :href='`/explorer/account/${this.didDetails.creator}`' target="_blank">{{ this.didDetails.creator }}</a></span>
+                    </li>
+                    <li class="list-group-item" v-if="this.didDetails != null">
+                        <b>DID:</b> <span class="badge badge-warning">{{ this.didDetails.didDocString.id }}</span>
+                    </li>
+                    
+
+                    <!-- For Staking -->
+                    <li class="list-group-item" v-if="this.staking != null">
+                        <b>Delegator:</b> <span class="badge badge-warning"><a :href='`/explorer/account/${this.staking.delegatorAddress}`' target="_blank">{{ this.staking.delegatorAddress }}</a></span>
+                    </li>
+                    <li class="list-group-item" v-if="this.staking != null">
+                        <b>Validator:</b> <span class="badge badge-warning"><a :href='`/explorer/account/${this.staking.validatorAddress}`' target="_blank">{{ this.staking.validatorAddress }}</a></span>
+                    </li>
+                    <li class="list-group-item" v-if="this.staking != null">
+                        <b>Amount:</b> <span class="badge badge-warning">{{ this.staking.value.amount }}{{this.staking.value.denom}}</span>
+                    </li>
+
+                    <!-- For General tx -->
                     <li class="list-group-item" v-if="this.txDetails.tevents.type==='bank'">
-                        <b>From:</b> <span class="badge badge-warning"><a :href='`/explorer/account/${this.computedTransfer.sender}`' target="_blank">{{ this.computedTransfer.sender }}</a></span>
+                        <b>From:</b> <span class="badge badge-warning"><a :href='`/explorer/account/${this.parsedTxDetails.fromAddress}`' target="_blank">{{ this.parsedTxDetails.fromAddress }}</a></span>
                     </li>
                     <li class="list-group-item" v-if="this.txDetails.tevents.type==='bank'">
-                        <b>To:</b> <span class="badge badge-warning"><a :href='`/explorer/account/${this.computedTransfer.recipient}`' target="_blank">{{   this.computedTransfer.recipient }}</a></span>
+                        <b>To:</b> <span class="badge badge-warning"><a :href='`/explorer/account/${this.parsedTxDetails.toAddress}`' target="_blank">{{   this.parsedTxDetails.toAddress }}</a></span>
                     </li>
                     <li class="list-group-item" v-if="this.txDetails.tevents.type==='bank'">
-                        <b>Amount:</b> <span class="badge badge-warning">{{  this.computedTransfer.amount  }}</span>
+                        <b>Amount:</b> <span class="badge badge-warning">{{  this.parsedTxDetails.amount[0].amount  }}{{ this.parsedTxDetails.amount[0].denom }}</span>
                     </li>
+
                     <li class="list-group-item">
                         <b>Signature:</b> {{  this.computedSignature }}
                     </li>
+
+                    <!-- <li class="list-group-item" style="word-wrap: break-word;">
+                        <b>Blob:</b> {{ this.txData }}
+                    </li>
+                     -->
+                    <li class="list-group-item" style="word-wrap: break-word;">
+                        <b>Parsed Blob:</b> {{ this.parsedData }}
+                    </li>
                     <li class="list-group-item" style="word-wrap: break-word;">
                         <b>Log:</b> {{ this.txDetails.log }}
-                    </li>
-                     <li class="list-group-item" style="word-wrap: break-word;">
-                        <b>Blob:</b> {{ this.txData }}
                     </li>
                 </ul>
             </div>
@@ -73,6 +96,7 @@
 
 <script>
 
+import parseTx from "../utils/decodeHidTx";
 export default {
     name: 'Test',
     data() {
@@ -89,6 +113,7 @@ export default {
                 type: "",
             },
             txData: "",
+            parsedData: null,
             blockHeight: "",
             txProof: "",
             transfer: {},
@@ -97,19 +122,13 @@ export default {
                 bank: "primary",
                 create_did: "dark",
                 update_did: "dark"
-            }
+            },
+            staking: null,
+            parsedTxDetails: null,
+            didDetails: null,
         }
     },
     computed: {
-        computedTransfer: function(){
-            console.log('computed got called')
-            if(this.txDetails.tevents.transfer){
-                this.txDetails.tevents.transfer.forEach(x => {
-                    this.transfer[x.key] = x.value
-                })
-            }
-            return this.transfer
-        },
         computedSignature: function(){
             if(this.txDetails.tevents.tx ){
                 this.txDetails.signature = this.txDetails.tevents.tx.find(x => x.key == 'signature').value
@@ -128,6 +147,22 @@ export default {
         this.getTransactionDetailsbyHash()
     },
     methods: {
+        parsedBlob(tx){
+            const d  = parseTx(tx);
+            // console.log(d)
+            if(this.txDetails.tevents.message[0].value === 'staking'){
+                this.staking = d
+            }
+
+            if(this.txDetails.tevents.message[0].value === 'bank'){
+                this.parsedTxDetails = d;
+            }
+
+            if(this.txDetails.tevents.message[0].value === 'create_did' || this.txDetails.tevents.message[0].value === 'update_did'){
+                this.didDetails = d
+            }
+            return d
+        },
         getType(type){
             this.txDetails.tevents.type = type;
             let html = "";
@@ -177,6 +212,7 @@ export default {
 
             this.blockHeight = height
             this.txData = tx
+            this.parsedData = this.parsedBlob(this.txData)
             this.txProof = proof
         },
     }
