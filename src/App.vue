@@ -103,6 +103,11 @@ export default {
           isShow: true,
         },
         { 
+          name: "Validators",  
+          path: "/explorer/validators",
+          isShow: true,
+        },
+        { 
           name: "DIDs",  
           path: "/explorer/dids",
           isShow: true,

@@ -7,6 +7,7 @@ import Test from './views/Test';
 import TxDetails from './views/TransactionDetails'
 import DIDs from './views/DIDs'
 import AccountDetails from './views/AccountDetails';
+import ValidatorList from './views/ValidatorList';
 
 
 Vue.use(Router)
@@ -56,6 +57,11 @@ const router =  new Router({
       path: '/explorer/account/:accountId',
       name: "Account Details",
       component: AccountDetails
+    },
+    {
+      path: '/explorer/validators',
+      name: "Validators",
+      component: ValidatorList
     },
   ]
 })
