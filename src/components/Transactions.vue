@@ -1,15 +1,15 @@
 <template>
     <div>          
-        <table class="table  table-striped table-bordered table-sm">
+        <table  v-if="transactionList.length > 0" class="table table-striped table-bordered table-sm">
             <tr>
                 <th>Block</th>
                 <th>Hash</th>
                 <th>Status</th>
                 <th>Type</th>
             </tr>
+            
             <tr v-for="t in transactionList" v-bind="t.hash">
                 <td><a :href='`/explorer/blockdetails?height=${t.height}`'>{{t.height}}</a></td>
-                <!-- TODO -->
                 <td><a :href='`/explorer/txdetails?hash=0x${t.hash}`'>0x{{shorten(t.hash)}}</a></td>
                 
                 
@@ -23,8 +23,15 @@
                     <div v-if="t.tx_result.events.filter(x => x.type == 'message').length > 0" v-html="getType(t.tx_result.events.filter(x => x.type == 'message'))"></div>
                     <div v-else>-</div>
                 </td>
-            </tr>
+            </tr>            
         </table>
+
+        <div v-if="isLoading" class="d-flex justify-content-center" style="min-height:400px">
+            <div class="spinner-border text-secondary" role="status" style="margin:auto">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+
     </div>
 
 </template>
@@ -49,7 +56,8 @@ export default Vue.extend({
                 bank: "primary",
                 create_did: "dark",
                 update_did: "dark"
-            }
+            },
+            isLoading: false
         }
     },
     computed:{
@@ -58,9 +66,10 @@ export default Vue.extend({
         }
     },
     created(){        
+        this.isLoading = true;
         setTimeout(()=> {
            this.getTop10Transactions()
-        }, 5000)
+        }, 3000)
         
     },
     watch: {
@@ -100,10 +109,12 @@ export default Vue.extend({
             
             const { result, error } = json;
             if(error){
+                this.isLoading = false;
                 throw new Error(error)
             }
             const { txs } = result;
             this.transactionList = txs;
+            this.isLoading = false;
         },
 
         checkTxStatus(code) {
@@ -113,24 +124,6 @@ export default Vue.extend({
             return "Success"
         },
 
-
-        ////// TODO: I am surpised that they do have timestamp field in the tx rpc
-        // async getTimestampFromBlock(height) {
-        //     const block_detailAPI = `${this.$config.hid.HID_NODE_RPC_EP}/block?height=${height}`;
-        //     const res = await fetch(block_detailAPI)
-        //     const json = await res.json();
-            
-        //     const { result, error } = json;
-        //     if(error){
-        //         throw new Error(error)
-        //     }
-        //     console.log(result)
-        //     const { block } = result;
-        //     const timestamp = block.header.time;
-
-        //     const d =  new Date(timestamp);
-        //     return d.getTime();
-        // },
         shorten(str){
             if(str.length <= 4){
                 return str

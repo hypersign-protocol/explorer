@@ -9,7 +9,7 @@
 <template>
     <div class="body">
         <h3>Top 50 Blocks</h3>
-        <div class="row" style="max-height: 500px; overflow-x: hidden; overflow-y: auto;margin-top:3%">
+        <div v-if="this.blockList.length > 0" class="row" style="max-height: 500px; overflow-x: hidden; overflow-y: auto;margin-top:3%">
             <div class="col-md-12">
                 <table class="table table-striped table-bordered table-sm">
                     <thead>
@@ -34,7 +34,15 @@
             </div>
         </div>
 
-        <div class="row">
+        
+
+        <div v-if="isLoading" class="d-flex justify-content-center" style="min-height:400px">
+            <div class="spinner-border text-secondary" role="status" style="margin:auto">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+
+        <div v-if="this.blockList.length > 0" class="row">
             <div class="col-md-12">
                 <a :href='`/explorer/blocks?nextBlockHeight=${parseInt(latestBlockHeight) - 50}`'> Previous </a> |
                 <a :href='`/explorer/blocks?nextBlockHeight=${parseInt(latestBlockHeight) + 50}`'> Next </a> 
@@ -52,17 +60,24 @@ export default {
     data() {
         return {
             blockList: [],
-            latestBlockHeight: ""
+            latestBlockHeight: "",
+            isLoading: false
         }
     },    
     async created(){
-
+        this.isLoading = true;
         setTimeout(async () => {
-            const { nextBlockHeight} = this.$route.query
-            const h =  this.$store.state.latestBlockHeight;
-            this.latestBlockHeight = nextBlockHeight ? nextBlockHeight: h;
-            await this.getTop10Blocks();
-        }, 5000)
+            try{
+                const { nextBlockHeight} = this.$route.query
+                const h =  this.$store.state.latestBlockHeight;
+                this.latestBlockHeight = nextBlockHeight ? nextBlockHeight: h;
+                await this.getTop10Blocks();
+                this.isLoading = false;
+            }catch(e){
+                this.isLoading = false;
+                console.error(e)
+            }
+        }, 3000)
         
     },
 

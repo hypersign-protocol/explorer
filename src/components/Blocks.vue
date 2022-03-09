@@ -1,6 +1,6 @@
 <template>
     <div>
-        <table class="table  table-striped table-bordered table-sm">
+        <table v-if="this.blockList.length > 0" class="table  table-striped table-bordered table-sm">
             <tr>
                 <th>Height</th>
                 <th>Hash</th>
@@ -18,6 +18,12 @@
                 <td>{{shorten(b.block.header.proposer_address)}}</td>    
             </tr>
         </table>
+
+        <div v-if="isLoading" class="d-flex justify-content-center" style="min-height:400px">
+            <div class="spinner-border text-secondary" role="status" style="margin:auto">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
     </div>
 
 </template>
@@ -31,12 +37,15 @@ export default Vue.extend({
     data() {
         return {        
            blockList: [],
-           latestBlockHeight: ""
+           latestBlockHeight: "",
+           isLoading: false
         }
     },
-    created(){   
+    async created(){   
         this.latestBlockHeight = this.heightInStore      
-        this.getTop10Blocks()
+        this.isLoading = true;
+        await this.getTop10Blocks()
+        this.isLoading = false;
     },
     computed:{
         heightInStore(){
@@ -52,7 +61,9 @@ export default Vue.extend({
    
     methods: {
         async getTop10Blocks(){
+        
             if(!this.latestBlockHeight && this.latestBlockHeight !== 'undefined'){
+                // this.isLoading = false
                 return
             }
             const block_searchAPI = `${this.$config.hid.HID_NODE_RPC_EP}/block_search?query="block.height<=${this.latestBlockHeight}"&page=1&per_page=10&order_by="desc"`;
@@ -61,10 +72,12 @@ export default Vue.extend({
             
             const { result, error } = json;
             if(error){
+                // this.isLoading = false
                 throw new Error(error)
             }
             const { blocks } = result;
             this.blockList = blocks;
+            
         },
 
         formatDate(date){

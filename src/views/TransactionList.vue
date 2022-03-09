@@ -9,7 +9,7 @@
 <template>
     <div class="body">
         <h3>Top 50 Transactions</h3>
-        <div class="row" style="max-height: 500px; overflow-x: hidden; overflow-y: auto;margin-top:3%">
+        <div v-if="transactionList.length > 0" class="row" style="max-height: 500px; overflow-x: hidden; overflow-y: auto;margin-top:3%">
             <div class="col-md-12">
                 <table class="table table-striped table-bordered table-sm">
                     <thead>
@@ -39,7 +39,13 @@
             </div>
         </div>
 
-        <div class="row">
+        <div v-if="isLoading" class="d-flex justify-content-center" style="min-height:400px">
+            <div class="spinner-border text-secondary" role="status" style="margin:auto">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+
+        <div v-if="transactionList.length > 0" class="row">
             <div class="col-md-12">
                 <a :href='`/explorer/transactions?nextBlockHeight=${parseInt(latestBlockHeight) - 50}`'> Previous </a> |
                 <a :href='`/explorer/transactions?nextBlockHeight=${parseInt(latestBlockHeight) + 50}`'> Next </a> 
@@ -58,6 +64,7 @@ export default {
         return {
             transactionList: [],
             latestBlockHeight: "2000",
+            isLoading: false,
             badges: {
                 staking: "info",
                 bank: "primary",
@@ -67,12 +74,20 @@ export default {
         }
     },    
     async created(){
+        this.isLoading = true;
          setTimeout(async () => {
-            const { nextBlockHeight } = this.$route.query
-            const h =  this.$store.state.latestBlockHeight;
-            this.latestBlockHeight = nextBlockHeight ?nextBlockHeight:  h 
-            await this.getTopTransactions();
-        }, 5000)
+             try{
+                const { nextBlockHeight } = this.$route.query
+                const h =  this.$store.state.latestBlockHeight;
+                this.latestBlockHeight = nextBlockHeight ?nextBlockHeight:  h 
+                await this.getTopTransactions();
+                this.isLoading = false;
+             }catch(e){
+                console.log(e);
+                this.isLoading = false 
+             }
+            
+        }, 3000)
     },
 
     methods: {
