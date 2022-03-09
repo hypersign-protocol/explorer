@@ -67,9 +67,10 @@ export default Vue.extend({
     },
     created(){        
         this.isLoading = true;
-        setTimeout(()=> {
-           this.getTop10Transactions()
-        }, 3000)
+        setTimeout(async ()=> {
+           await this.getTop10Transactions()
+           this.isLoading = false;
+        }, 5000)
         
     },
     watch: {
@@ -114,7 +115,7 @@ export default Vue.extend({
             }
             const { txs } = result;
             this.transactionList = txs;
-            this.isLoading = false;
+            
         },
 
         checkTxStatus(code) {
