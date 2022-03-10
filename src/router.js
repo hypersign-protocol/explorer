@@ -1,7 +1,14 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Home from './views/Home.vue';
-import RegisterDid from './views/RegisterDId.vue';
+import Dashboard  from './views/Dashboard';
+import BlockList from './views/BlockList';
+import TransactionList from './views/TransactionList';
+import Test from './views/Test';
+import TxDetails from './views/TransactionDetails'
+import DIDs from './views/DIDs'
+import AccountDetails from './views/AccountDetails';
+import ValidatorList from './views/ValidatorList';
+
 
 Vue.use(Router)
 
@@ -10,53 +17,57 @@ const router =  new Router({
   routes: [
     {
       path: '/explorer',
-      redirect: '/explorer/home'
+      redirect: '/explorer/dashboard'
     },
     {
-      path: '/explorer/newdid',
-      name: 'newdid',
-      component: RegisterDid
+      path: '/',
+      redirect: '/explorer/dashboard'
     },
     {
-      path: '/explorer/home',
-      name: 'Home',
-      component: Home
-    }
+      path: '/explorer/dashboard',
+      name: "Dashboard",
+      component: Dashboard
+    },
+    {
+      path: '/explorer/blocks',
+      name: "BlockList",
+      component: BlockList
+    },
+    {
+      path: '/explorer/transactions',
+      name: "TransactionList",
+      component: TransactionList
+    },
+    {
+      path: '/explorer/blockdetails',
+      name: "BlockDet",
+      component: Test
+    },
+    {
+      path: '/explorer/txdetails',
+      name: "TxDetails",
+      component: TxDetails
+    },
+    {
+      path: '/explorer/dids',
+      name: "Dids",
+      component: DIDs
+    },
+    {
+      path: '/explorer/account/:accountId',
+      name: "Account Details",
+      component: AccountDetails
+    },
+    {
+      path: '/explorer/validators',
+      name: "Validators",
+      component: ValidatorList
+    },
   ]
 })
 
-router.beforeEach((to, from, next) => {
-  if(to.matched.some(record => record.meta.requiresAuth)){
-    const authToken = localStorage.getItem('authToken')
-    if(authToken){
-      const url = `http://${location.hostname}:5000/api/auth/verify`
-      fetch(url,{
-        headers: {
-          'x-auth-token': authToken
-        },
-        method: 'POST'
-      }).then(res => res.json())
-      .then(json => {
-        if(json.status == 403){
-          next({
-            path: '/dashboard/login',
-            params: { nextUrl:  to.fullPath}
-          })  
-        }else{
-          next()
-        }
-      })
-      .catch((e)=> {
-        next({
-          path: '/dashboard/login',
-          params: { nextUrl:  to.fullPath}
-        })
-      })
-    }else{
-      next()
-    }
-  }else{
-    next()
-  }
-})
+// router.beforeEach((to, from, next) => {
+ 
+// })
+
 export default router

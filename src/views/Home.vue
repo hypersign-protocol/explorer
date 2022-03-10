@@ -31,7 +31,6 @@ margin-right: 12%
 }
 </style>
 <template>
-  <!-- <div class="home"> -->
   <div class="row">
     <div class="col-md-9 marginRight marginLeft">
       <div class="row">
@@ -122,9 +121,7 @@ margin-right: 12%
       </div>
     </div>
   </div>
-  <!-- </div> -->
 </template>
-
 <script>
 import QrcodeVue from "qrcode.vue";
 const { sha256hashStr } = require("../utils/hash");
