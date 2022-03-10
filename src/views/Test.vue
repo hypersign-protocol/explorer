@@ -53,7 +53,7 @@
 
 
 <script>
-import parseTx from "../utils/decodeHidTx";
+import encodeHidTx from '../utils/encodeHidTx'
 export default {
     name: 'Test',
     data() {
@@ -90,45 +90,22 @@ export default {
             const res =  await fetch(api)
             const json = await res.json();
             
-            const { result, error } = json;
+            const { result, error, } = json;
             if(error){
                 throw new Error(error)
             }
-            console.log(result)
+            
             const {  block, block_id } = result;
             this.blockHeader = block.header;
-            this.blockHash  = block_id.hash
-            this.blockHeight = this.blockHeader.height
-            
-            
-
-
-
-
-            this.blockTransactions = await this.getTxHashsAtHeight(this.blockHeight)
+                this.blockHash  = block_id.hash
+                this.blockHeight = this.blockHeader.height
+                if(block.data && block.data.txs && block.data.txs.length >0 ){
+                    this.blockTransactions = block.data.txs.map(x => encodeHidTx(x))
+                }
               }catch(e){
                 console.error(e)    
                 
             }
-            
-            
-        },
-
-        async getTxHashsAtHeight(height){
-            
-            
-                const api = `${this.$config.hid.HID_NODE_REST_EP}/txs?tx.height=${height}`
-                const res =  await fetch(api)
-                const json = await res.json();
-                
-                const { txs } = json;
-                if(txs){
-                    return txs.map(x => x.txhash)   
-                }else {
-                    return []
-                }
-                
-          
             
         }
     }
