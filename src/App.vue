@@ -65,7 +65,7 @@
         <!-- <h5 class="leftAlign">{{$config.app.name}}</h5>  -->
         <div class="form-group form-inline">
           <a  href="/explorer/dashboard/" >
-            <img class='logo-style' src="https://hypermine.in/hypersign/wp-content/uploads/2020/01/Banner_logo2.png"> 
+            <img class='logo-style' src="https://thumb.tildacdn.com/tild3065-3765-4865-b331-393637653931/-/resize/150x/-/format/webp/hypersign_Yellow.png"> 
             <h4 class="subtitle" > <span style="font-size:small;"> {{$config.app.name}} ({{$config.app.version}}) </span></h4>
           </a>
         </div>
