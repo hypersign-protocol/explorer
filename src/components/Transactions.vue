@@ -51,11 +51,19 @@ export default Vue.extend({
             tevents: {},
             latestBlockHeight: "",
             tempTxType: "",
+            customTypes: {
+                "/hypersignprotocol.hidnode.ssi.MsgCreateDID": "Create DID",
+                "/hypersignprotocol.hidnode.ssi.MsgUpdateDID": "Update DID",
+                "/hypersignprotocol.hidnode.ssi.MsgDeactivateDID": "Deactivate DID",
+                "/hypersignprotocol.hidnode.ssi.MsgCreateSchema": "Create Schema"
+            },
             badges: {
                 staking: "info",
                 bank: "primary",
-                create_did: "dark",
-                update_did: "dark"
+                "/hypersignprotocol.hidnode.ssi.MsgCreateDID": "dark",
+                "/hypersignprotocol.hidnode.ssi.MsgUpdateDID": "dark",
+                "/hypersignprotocol.hidnode.ssi.MsgDeactivateDID": "dark",
+                "/hypersignprotocol.hidnode.ssi.MsgCreateSchema": "dark"
             },
             isLoading: false
         }
@@ -92,9 +100,12 @@ export default Vue.extend({
             const type = atob(moduleEvent.attributes[0].value)
             let html = "";
             if(this.badges[type]){
-                html = `<span class='badge badge-pill badge-${this.badges[type]}'>${type}</span>`
-
-            }else{
+                if (!this.customTypes[type]) {
+                    html = `<span class='badge badge-pill badge-${this.badges[type]}'>${type}</span>`
+                } else {
+                    html = `<span class='badge badge-pill badge-${this.badges[type]}'>${this.customTypes[type]}</span>`
+                } 
+            } else {
                 html = `<span class='badge badge-pill badge-secondary'>${type}</span>`
             }
             return html
