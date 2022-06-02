@@ -19,12 +19,12 @@ export default {
         description: EnvProvider.value('DESC')
     },
     hid: {
-        HID_NODE_RPC_EP: EnvProvider.value('HID_NODE_RPC_EP') || "https://stage.hypermine.in/network/node1-rpc",
-        HID_NODE_SOCKET_EP: EnvProvider.value('HID_NODE_SOCKET_EP') || "wss://stage.hypermine.in/network/node1-ws/",
-        HID_NODE_REST_EP: EnvProvider.value('HID_NODE_REST_EP') || "https://stage.hypermine.in/network/node1-rest",
+        HID_NODE_RPC_EP: EnvProvider.value('HID_NODE_RPC_EP') || "https://devnet.hypersign.id/node1/rpc",
+        HID_NODE_SOCKET_EP: EnvProvider.value('HID_NODE_SOCKET_EP') || "wss://devnet.hypersign.id/node1/ws/",
+        HID_NODE_REST_EP: EnvProvider.value('HID_NODE_REST_EP') || "https://devnet.hypersign.id/node1/rest",
     },
     recaptchaSiteKey: EnvProvider.value('RECAPTCHA_SITE_KEY'),
-    
+
 
     gblBlocks: 'gblBlocks',
     gblBlockHeight: "",
