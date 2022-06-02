@@ -16,61 +16,51 @@ const router = new Router({
     mode: 'history',
     routes: [{
             path: '/explorer',
-            redirect: '/explorer/dashboard',
-            mode: 'hash'
+            redirect: '/explorer/dashboard'
         },
         {
             path: '/',
-            redirect: '/explorer/dashboard',
-            mode: 'hash'
+            redirect: '/explorer/dashboard'
         },
         {
             path: '/explorer/dashboard',
             name: "Dashboard",
-            component: Dashboard,
-            mode: 'hash'
+            component: Dashboard
         },
         {
             path: '/explorer/blocks',
             name: "BlockList",
-            component: BlockList,
-            mode: 'hash'
+            component: BlockList
         },
         {
             path: '/explorer/transactions',
             name: "TransactionList",
-            component: TransactionList,
-            mode: 'hash'
+            component: TransactionList
         },
         {
             path: '/explorer/blockdetails',
             name: "BlockDet",
-            component: Test,
-            mode: 'hash'
+            component: Test
         },
         {
             path: '/explorer/txdetails',
             name: "TxDetails",
-            component: TxDetails,
-            mode: 'hash'
+            component: TxDetails
         },
         {
             path: '/explorer/dids',
             name: "Dids",
-            component: DIDs,
-            mode: 'hash'
+            component: DIDs
         },
         {
             path: '/explorer/account/:accountId',
             name: "Account Details",
-            component: AccountDetails,
-            mode: 'hash'
+            component: AccountDetails
         },
         {
             path: '/explorer/validators',
             name: "Validators",
-            component: ValidatorList,
-            mode: 'hash'
+            component: ValidatorList
         },
     ]
 })
