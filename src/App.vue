@@ -114,7 +114,7 @@ export default {
         },
         { 
           name: "Wallet",  
-          path: "https://wallet.hypermine.in/",
+          path: "https://wallet-stage.hypersign.id/",
           isShow: true,
         }
       ],
