@@ -6,6 +6,8 @@ import TransactionList from './views/TransactionList';
 import Test from './views/Test';
 import TxDetails from './views/TransactionDetails'
 import DIDs from './views/DIDs'
+import Schema from './views/Schema'
+
 import AccountDetails from './views/AccountDetails';
 import ValidatorList from './views/ValidatorList';
 
@@ -51,6 +53,11 @@ const router = new Router({
             path: '/explorer/dids',
             name: "Dids",
             component: DIDs
+        },
+        {
+            path: '/explorer/schema',
+            name: "Schema",
+            component: Schema
         },
         {
             path: '/explorer/account/:accountId',

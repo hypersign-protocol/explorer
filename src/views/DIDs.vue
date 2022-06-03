@@ -81,7 +81,7 @@ export default {
         resolve(did, didDocStr){
             this.data  = didDocStr;
             this.showModal = true;
-            this.header = did
+            this.header = "DID Document(" + did + ")"
         },
 
         shorten(str){

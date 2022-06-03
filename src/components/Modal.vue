@@ -14,8 +14,8 @@ export default {
     <div v-if="show" class="modal-mask">
       <div class="modal-wrapper">
         <div class="modal-container">
-          <div class="modal-header">
-            <slot name="header"> <h4>DID Document ({{header}})</h4></slot>
+          <div class="modal-header" style="text-align:center">
+            <slot name="header"> <h4>{{header}}</h4></slot>
           </div>
 
           <div class="modal-body">

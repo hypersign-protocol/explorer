@@ -112,6 +112,11 @@ export default {
           path: "/explorer/dids",
           isShow: true,
         },
+        {
+          name: "Schema",
+          path: "/explorer/schema",
+          isShow: true,
+        },
         { 
           name: "Wallet",  
           path: "https://wallet-stage.hypersign.id/",
