@@ -19,7 +19,7 @@
                             <th>SchemaId</th>
                             <th>Name</th>
                             <th>Model Version</th>
-                            <th>Descrptions</th>
+                            <th>Description</th>
                             <th>Author</th>
                         </tr>
                     </thead>
