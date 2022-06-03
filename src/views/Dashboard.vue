@@ -48,26 +48,36 @@
 
 <template>
     <div class="body">
-        <div class="row" >
-            <div class="col-sm-3 box card">
+        <div class="row">
+            <div class="col-sm-2 box card">
                 <!-- Block Height // Toatal Number of Block -->
                 <span class="too-big-font">{{ heightInStore }}</span>
-                <span class="card-subheading" >Block Height</span>
+                <span class="card-subheading">Block Height</span>
             </div>
-            <div class="col-sm-3 box card">
+            <div class="col-sm-2 box card">
                 <!-- Toatal Number of Block -->
                 <span class="too-big-font">{{ transactionCount }}</span>
-                <span  class="card-subheading">Successful Txs</span>
+                <span class="card-subheading">Successful Txs</span>
             </div>
-            <div class="col-sm-3 box card">
+            <div class="col-sm-2 box card">
                 <!--  -->
                 <span class="too-big-font">{{ totalValidators }}</span>
-                <span  class="card-subheading">Total Validators</span>
+                <span class="card-subheading">Total Validators</span>
             </div>
-            <div class="col-sm-3 box card">
+            <div class="col-sm-2 box card">
                 <!-- Toatal DID Count -->
                 <span class="too-big-font"> {{ totalDIDCount }}</span>
-                <span  class="card-subheading">Total DIDs</span>
+                <span class="card-subheading">Total DIDs</span>
+            </div>
+            <div class="col-sm-2 box card">
+                <!-- Toatal DID Count -->
+                <span class="too-big-font"> {{ totalSchemaCount }}</span>
+                <span class="card-subheading">Total Schemas</span>
+            </div>
+            <div class="col-sm-2 box card">
+                <!-- Toatal DID Count -->
+                <span class="too-big-font"> {{ totalCredStausCount }}</span>
+                <span class="card-subheading">Total Credentials</span>
             </div>
             <!-- <div class="col-sm-2 box card">
                 <span class="too-big-font">0</span>
@@ -75,10 +85,12 @@
             </div> -->
         </div>
         <div class="row block-tx-margin">
-            <div class="col-md-6" >
+            <div class="col-md-6">
                 <div class="row">
                     <div class="col-md-6">
-                        <label class="table-heading"> <font-awesome-icon icon="fa-solid fa-cubes" /> Latest Blocks</label>
+                        <label class="table-heading">
+                            <font-awesome-icon icon="fa-solid fa-cubes" /> Latest Blocks
+                        </label>
                     </div>
                     <div class="col-md-6">
                         <a class="float-right" :href='`/explorer/blocks`'>See More</a>
@@ -93,7 +105,9 @@
             <div class="col-md-6">
                 <div class="row">
                     <div class="col-md-6">
-                        <label class="table-heading"> <font-awesome-icon icon="fa-solid fa-file-invoice-dollar" /> Latest Transactions</label>
+                        <label class="table-heading">
+                            <font-awesome-icon icon="fa-solid fa-file-invoice-dollar" /> Latest Transactions
+                        </label>
                     </div>
                     <div class="col-md-6">
                         <a class="float-right" :href='`/explorer/transactions`'>See More</a>
@@ -105,7 +119,7 @@
                     </div>
                 </div>
             </div>
-            
+
         </div>
     </div>
 </template>
@@ -127,7 +141,10 @@ export default {
             transactionCount: 0,
             totalValidators: 0,
             newTxEventArrived: "",
-            totalDIDCount: 0
+            totalDIDCount: 0,
+            totalSchemaCount: 0,
+            totalCredStausCount: 0,
+
         }
     },
     computed:{
@@ -142,6 +159,12 @@ export default {
         },
         newTxCreateDIDEventTrigger(){
             return this.$store.state.txCreateDIDEventTrigger
+        },
+        newTxSchemaEventTrigger() {
+            return this.$store.state.txCreateSchemaEventTrigger
+        },
+        newTxCredStatusEventTrigger() {
+            return this.$store.state.txMsgRegisterCredentialStatusEventTrigger
         }
 
     },
@@ -154,12 +177,20 @@ export default {
         },
         newTxCreateDIDEventTrigger(){
             this.updateDIDCount();
+        },
+        newTxSchemaEventTrigger() {
+            this.updateSchemaCount();
+        },
+        newTxCredStatusEventTrigger() {
+            this.updateCredStatusCount();
         }
     },
     async created(){
         this.getTransactionCount();
         this.getValidatorsCount();
         this.updateDIDCount();
+        this.updateSchemaCount();
+        this.updateCredStatusCount();
     },
     methods: {
 
@@ -174,7 +205,28 @@ export default {
             }
             this.totalDIDCount = totalDidCount;
         },
+        async updateSchemaCount() {
+            const transactionCountAPI = `${this.$config.hid.HID_NODE_REST_EP}/hypersign-protocol/hidnode/ssi/schema?count=true&pagination.countTotal=true&pagination.reverse=false`
+            const res = await fetch(transactionCountAPI)
+            const json = await res.json();
 
+            const { totalCount } = json;
+            if (!totalCount) {
+                throw new Error("Some error occurred while fetching did count")
+            }
+            this.totalSchemaCount = totalCount;
+        },
+        async updateCredStatusCount() {
+            const transactionCountAPI = `${this.$config.hid.HID_NODE_REST_EP}/hypersign-protocol/hidnode/ssi/credential?count=true&pagination.countTotal=true&pagination.reverse=false`
+            const res = await fetch(transactionCountAPI)
+            const json = await res.json();
+
+            const { totalCount } = json;
+            if (!totalCount) {
+                throw new Error("Some error occurred while fetching did count")
+            }
+            this.totalCredStausCount = totalCount;
+        },
         async getTransactionCount(){
             const event_name = "/cosmos.bank.v1beta1.MsgSend"
             const transactionCountAPI = `${this.$config.hid.HID_NODE_RPC_EP}/tx_search?query="message.action=\'${event_name}\'"`;
