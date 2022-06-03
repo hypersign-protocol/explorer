@@ -55,7 +55,8 @@ export default Vue.extend({
                 "/hypersignprotocol.hidnode.ssi.MsgCreateDID": "Create DID",
                 "/hypersignprotocol.hidnode.ssi.MsgUpdateDID": "Update DID",
                 "/hypersignprotocol.hidnode.ssi.MsgDeactivateDID": "Deactivate DID",
-                "/hypersignprotocol.hidnode.ssi.MsgCreateSchema": "Create Schema"
+                "/hypersignprotocol.hidnode.ssi.MsgCreateSchema": "Create Schema",
+                "/hypersignprotocol.hidnode.ssi.MsgRegisterCredentialStatus": "Create Cred Status"
             },
             badges: {
                 staking: "info",
@@ -63,7 +64,8 @@ export default Vue.extend({
                 "/hypersignprotocol.hidnode.ssi.MsgCreateDID": "dark",
                 "/hypersignprotocol.hidnode.ssi.MsgUpdateDID": "dark",
                 "/hypersignprotocol.hidnode.ssi.MsgDeactivateDID": "dark",
-                "/hypersignprotocol.hidnode.ssi.MsgCreateSchema": "dark"
+                "/hypersignprotocol.hidnode.ssi.MsgCreateSchema": "dark",
+                "/hypersignprotocol.hidnode.ssi.MsgRegisterCredentialStatus": "dark"
             },
             isLoading: false
         }
