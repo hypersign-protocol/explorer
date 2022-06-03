@@ -7,6 +7,7 @@ import Test from './views/Test';
 import TxDetails from './views/TransactionDetails'
 import DIDs from './views/DIDs'
 import Schema from './views/Schema'
+import CredentialsStatus from './views/CredentialsStatus'
 
 import AccountDetails from './views/AccountDetails';
 import ValidatorList from './views/ValidatorList';
@@ -58,6 +59,11 @@ const router = new Router({
             path: '/explorer/schema',
             name: "Schema",
             component: Schema
+        },
+        {
+            path: '/explorer/cred-status',
+            name: "CredentialsStatus",
+            component: CredentialsStatus
         },
         {
             path: '/explorer/account/:accountId',
