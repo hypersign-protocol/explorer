@@ -9,32 +9,37 @@
 <template>
     <div class="body">
         <h3>Top 50 Blocks</h3>
-        <div v-if="this.blockList.length > 0" class="row" style="max-height: 500px; overflow-x: hidden; overflow-y: auto;margin-top:3%">
+        <div v-if="blockList.length > 0" class="row"
+            style="max-height: 500px; overflow-x: hidden; overflow-y: auto;margin-top:3%">
             <div class="col-md-12">
                 <table class="table table-striped table-bordered table-sm">
                     <thead>
-                    <tr>
-                        <th>Height</th>
-                        <th>Hash</th>
-                        <th>Txs</th>
-                        <th>Time</th>
-                        <th>Proposer</th>
-                    </tr>
+                        <tr>
+                            <th>Height</th>
+                            <th>Hash</th>
+                            <th>Txs</th>
+                            <th>Time (UTC)</th>
+                            <th>Proposer</th>
+                        </tr>
                     </thead>
                     <tbody>
-                    <tr v-for="b in  blockList" v-bind="b.block_id.hash">
-                        <td><a :href='`/explorer/blockdetails?height=${b.block.header.height}`'>{{b.block.header.height}}</a></td>    
-                        <td><a :href='`/explorer/blockdetails?hash=0x${b.block_id.hash}`'>0x{{shorten(b.block_id.hash)}}</a></td>
-                        <td>{{b.block.data.txs.length}}</td>
-                        <td>{{formatDate(b.block.header.time)}}</td>
-                        <td>{{shorten(b.block.header.proposer_address)}}</td>    
-                    </tr>
+                        <tr v-for="b in  blockList" v-bind="b.block_id.hash">
+                            <td><a
+                                    :href='`/explorer/blockdetails?height=${b.block.header.height}`'>{{b.block.header.height}}</a>
+                            </td>
+                            <td><a
+                                    :href='`/explorer/blockdetails?hash=0x${b.block_id.hash}`'>0x{{shorten(b.block_id.hash)}}</a>
+                            </td>
+                            <td>{{b.block.data.txs.length}}</td>
+                            <td>{{formatdate(b.block.header.time)}}</td>
+                            <td>{{shorten(b.block.header.proposer_address)}}</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
         </div>
 
-        
+
 
         <div v-if="isLoading" class="d-flex justify-content-center" style="min-height:400px">
             <div class="spinner-border text-secondary" role="status" style="margin:auto">
@@ -45,16 +50,17 @@
         <div v-if="this.blockList.length > 0" class="row">
             <div class="col-md-12">
                 <a :href='`/explorer/blocks?nextBlockHeight=${parseInt(latestBlockHeight) - 50}`'> Previous </a> |
-                <a :href='`/explorer/blocks?nextBlockHeight=${parseInt(latestBlockHeight) + 50}`'> Next </a> 
+                <a :href='`/explorer/blocks?nextBlockHeight=${parseInt(latestBlockHeight) + 50}`'> Next </a>
             </div>
         </div>
     </div>
 
-    
+
 </template>
 
 
 <script>
+import { formatDate } from '../utils/others'
 export default {
     name: 'BlocksList',
     data() {
@@ -77,6 +83,7 @@ export default {
                 this.isLoading = false;
                 console.error(e)
             }
+        
         }, 3000)
         
     },
@@ -92,15 +99,17 @@ export default {
                 throw new Error(error)
             }
             const { blocks } = result;
-            if(blocks){
+            if (blocks && blocks[0]){
                 this.blockList = blocks;
                 this.latestBlockHeight = blocks[0].block.header.height
+            } else {
+                console.error('Could not fetch blocks')
+        
             }
         },
 
-        formatDate(date){
-            const d =  new Date(date);
-            return d.getTime();
+        formatdate(date) {
+            return formatDate(date);
         },
         shorten(str){
             const len = 8;

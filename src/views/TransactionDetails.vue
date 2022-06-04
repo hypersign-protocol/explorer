@@ -74,7 +74,7 @@
                     </li>
 
                     <li class="list-group-item">
-                        <b>Signature:</b> {{  this.computedSignature }}
+                        <b>Proof:</b> {{  this.computedSignature }}
                     </li>
 
                     <!-- <li class="list-group-item" style="word-wrap: break-word;">

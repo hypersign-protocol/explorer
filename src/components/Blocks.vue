@@ -1,21 +1,23 @@
 <template>
     <div>
-        <table v-if="this.blockList.length > 0" class="table  table-striped table-bordered table-sm">
+        <table v-if="blockList.length > 0" class="table  table-striped table-bordered table-sm">
             <tr>
                 <th>Height</th>
                 <th>Hash</th>
                 <th>Txs</th>
-                <th>Time</th>
+                <th>Time (UTC)</th>
                 <th>Proposer</th>
             </tr>
             <tr v-for="b in  blockList" v-bind="b.block_id.hash">
-            <!-- <tr :v-for="b in blocksList" :v-bind="b"> -->
-                <td><a :href='`/explorer/blockdetails?height=${b.block.header.height}`'>{{b.block.header.height}}</a></td>
+                <!-- <tr :v-for="b in blocksList" :v-bind="b"> -->
+                <td><a :href='`/explorer/blockdetails?height=${b.block.header.height}`'>{{b.block.header.height}}</a>
+                </td>
                 <!-- TODO -->
-                <td><a :href='`/explorer/blockdetails?hash=0x${b.block_id.hash}`'>0x{{shorten(b.block_id.hash)}}</a></td>
+                <td><a :href='`/explorer/blockdetails?hash=0x${b.block_id.hash}`'>0x{{shorten(b.block_id.hash)}}</a>
+                </td>
                 <td>{{b.block.data.txs.length}}</td>
-                <td>{{formatDate(b.block.header.time)}}</td>
-                <td>{{shorten(b.block.header.proposer_address)}}</td>    
+                <td>{{ formatdate(b.block.header.time)}}</td>
+                <td>{{shorten(b.block.header.proposer_address)}}</td>
             </tr>
         </table>
 
@@ -30,6 +32,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { formatDate  } from '../utils/others'
 // import config from '../config'
 
 export default Vue.extend({
@@ -79,11 +82,9 @@ export default Vue.extend({
             this.blockList = blocks;
             
         },
-
-        formatDate(date){
-            const d =  new Date(date);
-            return d.getTime();
-        },
+        formatdate(date){
+            return formatDate(date);
+        },  
         shorten(str){
             if(str.length <= 4){
                 return str
