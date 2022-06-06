@@ -124,7 +124,7 @@ export default {
         async fetchInTxs() {
 
 
-            const txListHeReceivedURL = `${this.$config.hid.HID_NODE_REST_EP}/cosmos/tx/v1beta1/txs?events=message.sender='${this.accountId}'` 
+            const txListHeReceivedURL = `${this.$config.hid.HID_NODE_REST_EP}/cosmos/tx/v1beta1/txs?events=transfer.recipient='${this.accountId}'` 
 
             const res = await fetch(txListHeReceivedURL)
             const json = await res.json();
